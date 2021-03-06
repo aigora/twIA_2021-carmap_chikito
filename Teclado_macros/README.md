@@ -4,6 +4,7 @@ El teclado tendrá no más de nueve teclas y posiblemente más de un perfil para
 # Perfil 1: control remoto para el movimiento
 - Hace falta una tecla de encender/apagar, y una para cambiar entre los perfiles.
 - Cuatro teclas servirán como flechas direccionales para mover el Chikito.
+    - Lo he vuelto a pensar y es mejor que use un joystick.
 - Dado que el movimiento del robot genera un output gráfico, hacen falta botones que funcionen como _rec_, _stop_ y _pause_, y un botón de guardar para que la gráfica del output se guarde, supongo.
 
 # Perfil 2: menú
