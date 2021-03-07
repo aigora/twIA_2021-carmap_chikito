@@ -8,8 +8,8 @@ Robot inalámbrico por Bluetooth que se conecta al ordenador. Con un teclado de 
 - Moreno Santa Cruz, Fernando. [Fer014](https://github.com/Fer014)
 - Nader Prieto, Amélie. [amelie-nader-prieto](https://github.com/amelie-nader-prieto)
 - Rubio Regojo, Luis Fernando. [luisrubio27](https://github.com/luisrubio27)
-- Sánchez Solera, Lucas. []()
-- Torrecillas Barba, Celia. []()
+- Sánchez Solera, Lucas. [luc-39](https://github.com/luc-39)
+- Torrecillas Barba, Celia. [Celia-t22](https://github.com/Celia-t22)
 
 ## Objetivos del trabajo
 
