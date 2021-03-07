@@ -1,6 +1,8 @@
 # Programa del teclado Arduino
 # Teclado de Arduino
-El teclado tendrá no más de nueve teclas y posiblemente más de un perfil para distintas funciones del programa. Faltan concretar detalles como por ejemplo si va a tener una conexión de matriz.
+El teclado tendrá no más de nueve teclas y posiblemente más de un perfil para distintas funciones del programa.
+# Objetivo
+- Crear una interfaz para controlar fácilmente el robot y realizar comandos que puedan servir en el programa.
 # Perfil 1: control remoto para el movimiento
 - Hace falta una tecla de encender/apagar, y una para cambiar entre los perfiles.
 - Cuatro teclas servirán como flechas direccionales para mover el Chikito.
