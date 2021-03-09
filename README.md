@@ -4,12 +4,12 @@ Robot inalámbrico por Bluetooth que se conecta al ordenador. Con un teclado de 
 
 ## Integrantes del equipo
 
-- Luis Álvarez, Echedey. [echedey-luis-alvarez](https://github.com/echedey-luis-alvarez)
-- Moreno Santa Cruz, Fernando. [Fer014](https://github.com/Fer014)
-- Nader Prieto, Amélie. [amelie-nader-prieto](https://github.com/amelie-nader-prieto)
-- Rubio Regojo, Luis Fernando. [luisrubio27](https://github.com/luisrubio27)
-- Sánchez Solera, Lucas. [luc-39](https://github.com/luc-39)
-- Torrecillas Barba, Celia. [Celia-t22](https://github.com/Celia-t22)
+- Echedey Luis Álvarez. @echedey-luis-alvarez
+- Fernando Moreno Santa Cruz. @Fer014
+- Amélie Nader Prieto. @amelie-nader-prieto
+- Luis Fernando Rubio Regojo. @luisrubio27
+- Lucas Sánchez Solera. @luc-39
+- Celia Torrecillas Barba. @Celia-t22
 
 ## Objetivos del trabajo
 
