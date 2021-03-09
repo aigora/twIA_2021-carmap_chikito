@@ -25,3 +25,8 @@ Robot inalámbrico por Bluetooth que se conecta al ordenador. Con un teclado de 
 - [] Control de rotación de cada rueda mediante optoacopladores o pares LED IR - Sensor IR.
 - [] Algoritmo para que el robot pueda volver sobre sí mismo
 - [] Sistema para guardar posición, rotación, velocidad, (template de un robot) en un fichero.
+
+## TODO:
+- [] Wiki
+- [] Crear logo
+- [] Crear diagramas de flujo
