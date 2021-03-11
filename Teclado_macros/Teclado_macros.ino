@@ -2,13 +2,14 @@
  *  This file is the main program for the macro keyboard.
  */
 
-void setup() {
-  // put your setup code here, to run once:
-
+void setup() { //inicializando el teclado
+pinMode(button_pin,INPUT_PULLUP);
+Mouse.begin();
+Keyboard.begin();
+delay(1000)
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+  int value=digitalRead(button_pin);
+  //aquí irá la función del teclado
 }
-//aquí pondré el código cuando lo tenga más avanzado, ok?
