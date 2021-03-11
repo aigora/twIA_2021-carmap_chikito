@@ -1,4 +1,4 @@
-# Ignore project files as stated in section number 4 os the AIGORA WiKi
+# Ignore project files as stated in section number 4 of the AIGORA WiKi
 *.sln
 *.vcxproj
 *.vcxproj.filters
