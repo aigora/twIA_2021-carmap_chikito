@@ -5,26 +5,28 @@
 #ifndef VECTORH // Checks if this header is included twice. Only lets defining once
 #define VECTORH
 
-/* Basic operations */
-struct vector2D vector2D_add(struct vector2D vector1, struct vector2D vector2);
-struct vector2D vector2D_substract(struct vector2D vector1, struct vector2D vector2);
-struct vector2D vector2D_productByScalar(struct vector2D vector, double lambda);
+typedef struct _vector2D vector2D;
 
-double vector2D_scalarVectProduct(struct vector2D vector1, struct vector2D vector2);
-double vector2D_modulo(struct vector2D vector);
-
-/* A bit more advanced operations*/
-struct vector2D vector2D_rotate(struct vector2D vector, double angleRad);
-struct vector2D vector2D_normalize(struct vector2D vector);
-
-/* User Interface functions */
-void vector2D_print(struct vector2D vector, unsigned char precision);
-struct vector2D vector2D_scanf_s(void);
-
-struct vector2D
+struct _vector2D
 {
 	double x, y;
 };
+
+/* Basic operations */
+vector2D vector2D_add(vector2D vector1, vector2D vector2);
+vector2D vector2D_substract(vector2D vector1, vector2D vector2);
+vector2D vector2D_productByScalar(vector2D vector, double lambda);
+
+double vector2D_scalarVectProduct(vector2D vector1, vector2D vector2);
+double vector2D_modulo(vector2D vector);
+
+/* A bit more advanced operations*/
+vector2D vector2D_rotate(vector2D vector, double angleRad);
+vector2D vector2D_normalize(vector2D vector);
+
+/* User Interface functions */
+void vector2D_print(vector2D vector, unsigned char precision);
+vector2D vector2D_scanf_s(void);
 
 /* typedef struct vector3D
 {
