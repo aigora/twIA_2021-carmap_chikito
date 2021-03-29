@@ -1,16 +1,7 @@
-# Programa del teclado Arduino
-# Teclado de Arduino
-El teclado tendrá no más de nueve teclas y posiblemente más de un perfil para distintas funciones del programa.
-# Objetivo
-- Crear una interfaz para controlar fácilmente el robot y realizar comandos que puedan servir en el programa.
-# Perfil 1: control remoto para el movimiento
-- Hace falta una tecla de encender/apagar, y una para cambiar entre los perfiles.
-- Cuatro teclas servirán como flechas direccionales para mover el Chikito.
-    - Lo he vuelto a pensar y es mejor que use un joystick.
-- Dado que el movimiento del robot genera un output gráfico, hacen falta botones que funcionen como _rec_, _stop_ y _pause_, y un botón de guardar para que la gráfica del output se guarde, supongo.
+## Programa del teclado Arduino
+Objetivo: Crear una interfaz (HID) para controlar el robot y realizar comandos, además de generar los datos de posición y rotación que necesitan los programas mapeador y robot CMC para funcionar.
+Se conecta en el puerto USB.
 
-# Perfil 2: menú
-Un menú para manejar las gráficas generadas por el robot, como para seleccionar o borrar.
+---
 
-___6 de marzo de 2021___
 Trabajando en esta solución: _Amélie_
