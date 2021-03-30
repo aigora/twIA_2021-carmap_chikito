@@ -36,6 +36,10 @@ double vector2D_modulo(vector2D vector)
 	return sqrt(vector2D_scalarVectProduct(vector, vector)); // Square root of the scalar product of vector and itself
 }
 
+double vector2D_angle(vector2D vector1, vector2D vector2) {
+	return acos((vector2D_scalarVectProduct(vector1, vector2) / ((vector2D_modulo(vector1)) * (vector2D_modulo(vector2)))));  //angle given in radians
+}
+
 /* A bit more advanced operations*/
 vector2D vector2D_rotate(vector2D vector, double angleRad) {
 	double rotationM[2][2] = { // Rotation matrix
