@@ -19,6 +19,7 @@ vector2D vector2D_productByScalar(vector2D vector, double lambda);
 
 double vector2D_scalarVectProduct(vector2D vector1, vector2D vector2);
 double vector2D_modulo(vector2D vector);
+double vector2D_angle(vector2D vector1, vector2D vector2);
 
 /* A bit more advanced operations*/
 vector2D vector2D_rotate(vector2D vector, double angleRad);
