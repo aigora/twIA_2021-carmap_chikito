@@ -2,7 +2,7 @@
 * Esto en C++ no pasaba, vamos a ver, si me dejaran usar clases lo solucionaba con clase
 */
 
-#include <stdio.h> // Includes printf and scanf_f functions
+#include <stdio.h> // Includes printf and scanf_s functions
 #include <math.h> // Includes the sqrt function
 
 #include "vector.h"
