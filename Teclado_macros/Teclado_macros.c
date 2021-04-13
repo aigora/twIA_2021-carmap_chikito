@@ -2,6 +2,7 @@
 #include <malloc.h>
 #include <time.h>
 #include <signal.h>
+#include "Keyboard.h"
 
 enum Perfiles {
 	Perfil1=1,
