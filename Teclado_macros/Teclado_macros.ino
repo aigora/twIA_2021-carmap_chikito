@@ -20,6 +20,8 @@ void loop();
 void cerrar();
 
 void setup() {
+  Serial.begin(9600);
+  while (¡Serial){;}
   const int button_pins[]={PAUSE,QUIT,SWITCH,START,SAVE,FWD,TURN};
   int size=(sizeof(button_pins)/sizeof(int));
   int k=0;
@@ -63,6 +65,7 @@ void loop(){
         case 8: Keyboard.press(KEY_BACKSPACE); delay(50); Keyboard.release(KEY_BACKSPACE); break;
         default: break;
       }
+      Serial.println(i);
     }
   }
 }

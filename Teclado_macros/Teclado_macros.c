@@ -1,39 +1,28 @@
+#include "Keyboard/Keyboard.h"
 #include <stdio.h>
-#include <malloc.h>
-#include <time.h>
-#include <signal.h>
-#include "Keyboard.h"
+#include <stdlib.h>
+#include <windows.h>
+#include "SerialClass/SerialClass.h"
 
-enum Perfiles {
-	Perfil1=1,
-	Perfil2
-};
-
-enum Botones { //digital pins
-	pause = 2,
-	quit,
-	profileSwitch,
-	start,
-	save,
-	fwd,
-	turn
-};
-
+typedef enum buttonPins {
+	pause = 2,quit,profileSwitch,start,save,fwd,turn
+}BUTTONS;
 typedef enum buttonStates {
-	HIGH=0,
-	LOW
-}state;
+	HIGH=0,LOW
+}STATE;
 
-void setup() {	//configuracion
-	;
+void configurar();
+void cerrar();
+
+void main() {
+	configurar();
+	//bucle del programa principal
+	cerrar();
 }
 
-int main(void) {
-	state button_states[7] = {HIGH,HIGH,HIGH,HIGH,HIGH,HIGH,HIGH};
-	//bucle principal
-	void loop() {
-		;
-	}
-	//cierre
-	;
+void configurar() {
+	//configuración / inicialización de la conexión con el arduino;
+}
+void cerrar() {
+	//terminación de la conexión / cerrar programa;
 }
