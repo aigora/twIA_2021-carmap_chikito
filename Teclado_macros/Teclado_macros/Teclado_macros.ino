@@ -5,8 +5,6 @@
 
 #include <Keyboard.h>
 
-#define X A0        
-#define Y A1        //joystick pins: analog
 #define PAUSE 2        //(press joystick: pause movement)
 #define QUIT 3     //"quit"
 #define SWITCH 4     //"switch"
@@ -58,7 +56,7 @@ void loop(){
         Keyboard.press(KEY_RIGHT_CTRL); Keyboard.press('s');
         delay(50);
         Keyboard.release(KEY_RIGHT_CTRL); Keyboard.release('s'); break;
-        case 7: Keyboard.press(KEY_ARROW_UP); delay(50); t+=50;
+        case 7: Keyboard.press(KEY_ARROW_UP); delay(50); t+=50;  //time counter by 50ms
         buttons_now[i]=digitalRead(buttons[i]);
         (buttons_now[i]==HIGH) ? Keyboard.release(KEY_ARROW_UP) : break;
         break;
