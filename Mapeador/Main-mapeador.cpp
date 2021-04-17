@@ -8,6 +8,7 @@
 #include <wchar.h>
 #include <iso646.h> // || se puede escribir como or y && como and - legibilidad: https://cplusplus.com/reference/ciso646/
 #include <math.h>
+#include <time.h>
 
 #include "vector.h" // Custom library to create and operate vectors easily
 #include "SerialClass/SerialClass.h" // Retrieved from: https://github.com/Gmatarrubia/LibreriasTutoriales (modified local resources)
@@ -21,7 +22,7 @@
 #define DEF_PRECISION 5 // Default precision to use when printing vectors
 
 // Program functions
-void getCOM_port_s(wchar_t*, int); // Obtiene puerto COM desde stdin
+void getCOM_port_s(wchar_t*, size_t); // Obtiene puerto COM desde stdin
 
 int main() // Main function
 {
@@ -70,24 +71,24 @@ int main() // Main function
     return 0; // Exit without errors
 }
 
-void getCOM_port_s(wchar_t* dest, int max) {
+void getCOM_port_s(wchar_t* dest, size_t max) {
     unsigned char status = 0, portNumber = 0;
     char tempPort[PORT_SZ]; // Trabajamos en cadena de caracteres simples y luego pasamos a *wchar_t
 
     do { // Menú para indicar el puerto
         printf("Escriba nombre del puerto serie a conectar: COM");
         status = scanf_s("%hhu", &portNumber); // Recibe el numero como entero de tamaño unigned char máximo (ahorro de memoria)
-    } while (status == 0 or portNumber == 0); // TODO #2: rev. los puertos COM no se inician en 0
+    } while (status == 0 or portNumber == 0); // TODO #2: rev. puerto COM puede ser == 0 ?
 
-    if (portNumber > 9) { // Si solo tiene un dígito
+    if (portNumber > 9) { // Si tiene más de un dígito
         strcpy_s(tempPort, "\\\\.\\COM"); // Véase tutorial en https://geekytheory.com/como-usar-arduino-y-cplusplus
     }
-    else { // Si tiene más de un dígito
+    else { // Si solo tiene un dígito
         strcpy_s(tempPort, "COM");
     }
 
-    sprintf_s(tempPort + strlen(tempPort), 3, "%d", portNumber); // Concatena el número a la cadena inicial, max 3 chars concatenados, con formato entero
-    swprintf_s(dest, PORT_SZ, L"%hs", tempPort); // Cambia el formato de *char a *wchar_t
+    sprintf_s(tempPort + strlen(tempPort), 4, "%d", portNumber); // Concatena el número a la cadena inicial, max 3 chars concatenados, con formato entero
+    swprintf_s(dest, PORT_SZ, L"%hs", tempPort); // Cambia el formato de *char a *wchar_t, escribe en cadena destino
     
     return; // Fin de obtener puerto.
 }
