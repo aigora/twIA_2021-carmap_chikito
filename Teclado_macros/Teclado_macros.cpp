@@ -11,18 +11,10 @@ typedef enum buttonStates {
 	HIGH=0,LOW
 }STATE;
 
-void configurar();
-void cerrar();
-
 void main() {
-	configurar();
-	//bucle del programa principal
-	cerrar();
-}
-
-void configurar() {
-	//configuración / inicialización de la conexión con el arduino;
-}
-void cerrar() {
-	//terminación de la conexión / cerrar programa;
+	char buffer;
+	Serial* Arduino;
+	char port[] = "COM3";
+	Arduino = new Serial((char*)port);
+	while (Arduino->IsConnected) { ; }
 }

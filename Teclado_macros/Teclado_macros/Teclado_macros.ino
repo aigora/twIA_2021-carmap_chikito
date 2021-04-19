@@ -13,10 +13,6 @@
 #define FWD 7  //"move" button (which is pressed and held down);
 #define TURN 8  //"return" button
 
-void setup();
-void loop();
-void cerrar();
-
 void setup() {
   Serial.begin(9600);
   while (¡Serial){;}
@@ -26,8 +22,6 @@ void setup() {
   for (k=0;k<size;k++){
     pinMode(button_pins[j],INPUT_PULLUP);
   }
-  pinMode(X,INPUT);
-  pinMode(Y,INPUT);
   Keyboard.begin();
 }
 
@@ -58,19 +52,14 @@ void loop(){
         Keyboard.release(KEY_RIGHT_CTRL); Keyboard.release('s'); break;
         case 7: Keyboard.press(KEY_ARROW_UP); delay(50); t+=50;  //time counter by 50ms
         buttons_now[i]=digitalRead(buttons[i]);
-        (buttons_now[i]==HIGH) ? Keyboard.release(KEY_ARROW_UP) : break;
+        
+        Keyboard.release(KEY_ARROW_UP);
         break;
         case 8: Keyboard.press(KEY_BACKSPACE); delay(50); Keyboard.release(KEY_BACKSPACE); break;
         default: break;
-      }
+        }
+      if(Serial.available>0)
       Serial.println(i);
+      }
     }
   }
-}
-
-void cerrar(){
-  delay(50);
-  Keyboard.releaseAll();
-  Keyboard.end();
-  exit(1);
-}
