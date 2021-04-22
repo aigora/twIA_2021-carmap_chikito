@@ -1,12 +1,12 @@
-/*  Main-mapeador.c : This file contains the 'main' function. Program execution begins and ends there.
+/*  Main-mapeador.c : This file contains the 'main' function. Program execution begins and ends here.
 */
 
 
 #include <stdio.h> // Standard I/O
 #include <stdlib.h>
 #include <string.h>
-#include <wchar.h> // Para usar los caracteres amplios (modificación a SerialClass.h)
-#include <iso646.h> // || se puede escribir como or y && como and - legibilidad: https://cplusplus.com/reference/ciso646/
+#include <wchar.h> // Para usar los caracteres amplios (modificación y paso de valores a SerialClass.h)
+#include <iso646.h> // "||" se puede escribir como "or" y "&&" como "and" - legibilidad: https://cplusplus.com/reference/ciso646/
 #include <math.h> // Funciones matemáticas
 #include <time.h> // Funciones para obtener la fecha y hora, y darles formato
 
@@ -14,33 +14,30 @@
 #include "SerialClass/SerialClass.h" // Retrieved from: https://github.com/Gmatarrubia/LibreriasTutoriales (modified local resources)
 
 // Bluetooth definitions
-#define PORT_SZ 15// Port wide character string size
+#define PORT_SZ 15 // Port wide character string size
 #define BUF 200
 
 // File handling definitions
 #define NAME_SZ 50
-#define WP_PATH "WAYPOINTS"
-#define MODE_TIMESTAMP "\0"
+#define WP_PATH "WAYPOINTS" // Unused: in case files are saved into specific folder, use this folder name
+#define MODE_TIMESTAMP "\0" // How to assign the name to the waypoint files
 
 // Math definitions
 #define M_PI 3.14159265358979323846 // Pi
 #define DEF_PRECISION 5 // Default precision to use when printing vectors
 
-//// Program functions
+//// Program functions ////
 
 // File & folder oriented
-errno_t createWaypoints_file(FILE*, const size_t, const char[], char*);
-    /*
-    Devuelve cero si consigue hacer el archivo [devuelve lo mismo que fopen_s()]; args.: puntero a archivo (se modifica),
+errno_t createWaypoints_file(FILE*, const size_t, const char[], char*); /* Devuelve cero si consigue hacer el archivo [devuelve lo mismo que fopen_s()]; args.:
+    puntero a archivo (se modifica),
     tamaño max del nombre archivo, 
     nombre archivo o protocolo a utilizar (MODE_TIMESTAMP ó "\0" para usar la estampa de tiempo), 
     puntero a nombre asignado al archivo finalmente, tamaño mayor o igual al especificado en arg. nº 2
     */
 
 // Bluetooth oriented
-void getCOM_port_s(wchar_t*, size_t); 
-    /*
-    Obtiene puerto COM desde stdin; args.:
+void getCOM_port_s(wchar_t*, size_t); /* Obtiene puerto COM desde stdin; args.:
     puntero a cadena de caracteres anchos donde se guarda el puerto a utilizar
     tamaño max de la cadena
     */
@@ -70,22 +67,26 @@ int main() // Main function
 
         if (error == 100) { // Fallo asignando memoria dinámica
             printf("Error in memory assignment. Big oof for the programmer trying to figure this out.");
-            return 30;
+            return 31;
         }
         else if (error == 150) { // Indica que el nombre especificado es inapropiado. Definido en función local
             printf("Error creating file: name is not supported in source code.");
             return 32;
+        }
+        else if (error != 0) {
+            printf("Unexpected error creating file.");
+            return 30;
         }
 
         if (!fp_puntos) { // fp_puntos es NULL si hubo algún error
             printf("Error creating/opening file. File might already exist. Error number: %d", error);
             return 35;
         }
-        else { // Arduino conectado, fichero creado sin errores
+        else { // Arduino esstá conectado y el fichero fue creado sin errores
             printf("El progreso del robot sera guardado en el fichero: %s", nombreArchivoPuntos);
         }
     }
-    else { // No se puedo conectar
+    else { // No se pudo conectar
         printf("Couldn't connect to Arduino.");
         return 40;
     }
