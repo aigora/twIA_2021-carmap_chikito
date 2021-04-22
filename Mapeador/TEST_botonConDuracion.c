@@ -13,7 +13,7 @@ int main()
     fflush(stdin);
 
     printf("Ahora veremos el numero de veces que se repite el boton1\n");
-    tok=strtok(A,",.;:")
+    tok=strtok(A,",.;:");
     while(tok!=NULL)
     {
         if (strcmp(tok,"boton1")===0)
