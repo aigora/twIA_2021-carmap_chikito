@@ -118,6 +118,9 @@ int main() // Main function
         Sleep(1000);
     }
 
+    // Cerramos el archivo
+    fclose(fp_puntos);
+
     return 0; // Exit without errors
 }
 
