@@ -1,8 +1,3 @@
-# Ignore project files as stated in section number 4 of the AIGORA WiKi
-*.sln
-*.vcxproj
-*.vcxproj.filters
-
 # Generated WAYPOINTS files
 Mapeador_WAYPOINTS*.txt
 
