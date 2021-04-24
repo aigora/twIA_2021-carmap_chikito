@@ -141,13 +141,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main-mapeador.cpp" />
-    <ClCompile Include="Robot.c" />
+    <ClCompile Include="robot.cpp" />
     <ClCompile Include="SerialClass\SerialClass.cpp" />
     <ClCompile Include="vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Robot.h" />
+    <ClInclude Include="robot.h" />
     <ClInclude Include="SerialClass\SerialClass.h" />
     <ClInclude Include="vector.h" />
   </ItemGroup>
