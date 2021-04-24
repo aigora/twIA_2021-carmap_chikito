@@ -1,5 +1,5 @@
 @echo off
-echo This program will DELETE all files with syntax Mapeador_WAYPOINTS_*.txt
+echo This program will DELETE all files with syntax Mapeador_WAYPOINTS_*.???
 
 echo Would you like to continue [Y/N]?
 
@@ -12,7 +12,7 @@ goto close
 
 :proceed
 @echo on
-del Mapeador_WAYPOINTS_*.txt
+del Mapeador_WAYPOINTS_*.???
 echo Finished
 pause
 goto close

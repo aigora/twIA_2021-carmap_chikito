@@ -144,8 +144,10 @@
     <ClCompile Include="robot.cpp" />
     <ClCompile Include="SerialClass\SerialClass.cpp" />
     <ClCompile Include="vector.cpp" />
+    <ClCompile Include="waypoints_filehandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="waypoints_filehandler.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="robot.h" />
     <ClInclude Include="SerialClass\SerialClass.h" />
