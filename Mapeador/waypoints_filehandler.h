@@ -13,6 +13,8 @@
 
 #include "vector.h"
 
+#define MODE_TIMESTAMP "\0" // How to assign the name to the waypoint files
+
 errno_t waypts_create_file(FILE** fp, const size_t sz, const char filename[], char* assigned);
     /* Devuelve cero si consigue hacer el archivo [devuelve lo mismo que fopen_s() o fwrite() al inicializarlo]; args.:
     fp: puntero a puntero de archivo (FILE*) (se modifica),
