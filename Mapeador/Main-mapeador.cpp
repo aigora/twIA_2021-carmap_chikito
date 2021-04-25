@@ -20,7 +20,6 @@
 // File handling definitions
 #define NAME_SZ 50
 // #define WP_PATH "WAYPOINTS" // Unused: in case files are saved into specific folder, use this folder name
-#define MODE_TIMESTAMP "\0" // How to assign the name to the waypoint files
 
 // Math definitions
 #define M_PI 3.14159265358979323846 // Pi
