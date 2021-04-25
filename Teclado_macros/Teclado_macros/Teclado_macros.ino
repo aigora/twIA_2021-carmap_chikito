@@ -3,7 +3,7 @@
  *  This file is the main program for the macro keyboard.
  */
 
-#include <Keyboard.h>
+#include "Keyboard.h"
 
 #define PAUSE 2        //(press joystick: pause movement)
 #define QUIT 3     //"quit"
@@ -13,13 +13,11 @@
 #define TURN 7  //"return" button
 
 void setup() {
-  Serial.begin(9600);
-  while (¡Serial){;}
+  Serial.begin(9600); while(!Serial){;}
   const int button_pins[]={PAUSE,QUIT,START,SAVE,FWD,TURN};
-  int size=(sizeof(button_pins)/sizeof(int));
-  int k=0;
+  int size=(sizeof(button_pins)/sizeof(int)),k=0;
   for (k=0;k<size;k++){
-    pinMode(button_pins[j],INPUT_PULLUP);
+    pinMode(button_pins[k],INPUT);
   }
   Keyboard.begin();
 }
@@ -57,8 +55,7 @@ void loop(){
         case 8: Keyboard.press(KEY_BACKSPACE); delay(50); Keyboard.release(KEY_BACKSPACE); break;
         default: break;
         }
-      if(Serial.available>0)
-      Serial.println(i);
+      if(Serial.available>0) Serial.println(i);
       }
     }
   }
