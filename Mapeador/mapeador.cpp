@@ -35,7 +35,7 @@ int main(void)
 			break;
 		case 'o':x--;//mover en direccion oeste 
 			break;
-		case'n':y--;//mover en direccion norte
+		case 'n':y--;//mover en direccion norte
 			break;
 		case 's':y++;//mover en direccion sur
 			break;
