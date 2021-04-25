@@ -7,16 +7,15 @@
 
 #define PAUSE 2        //(press joystick: pause movement)
 #define QUIT 3     //"quit"
-#define SWITCH 4     //"switch"
-#define START 5  //("start/end" button)
-#define SAVE 6  //("save" button)
-#define FWD 7  //"move" button (which is pressed and held down);
-#define TURN 8  //"return" button
+#define START 4  //("start/end" button)
+#define SAVE 5  //("save" button)
+#define FWD 6  //"move" button (which is pressed and held down);
+#define TURN 7  //"return" button
 
 void setup() {
   Serial.begin(9600);
   while (¡Serial){;}
-  const int button_pins[]={PAUSE,QUIT,SWITCH,START,SAVE,FWD,TURN};
+  const int button_pins[]={PAUSE,QUIT,START,SAVE,FWD,TURN};
   int size=(sizeof(button_pins)/sizeof(int));
   int k=0;
   for (k=0;k<size;k++){
@@ -26,8 +25,8 @@ void setup() {
 }
 
 void loop(){
-  const int buttons[]={PAUSE,QUIT,SWITCH,START,SAVE,FWD,TURN};
-  int buttons_now[]={HIGH,HIGH,HIGH,HIGH,HIGH,HIGH,HIGH};
+  const int buttons[]={PAUSE,QUIT,START,SAVE,FWD,TURN};
+  int buttons_now[]={HIGH,HIGH,HIGH,HIGH,HIGH,HIGH};
   int t=0,i,j;
   int start=HIGH;
   do{
