@@ -13,12 +13,12 @@
 
 #include "vector.h"
 
-errno_t waypts_create_file(FILE**, const size_t, const char[], char*);
-    /* Devuelve cero si consigue hacer el archivo [devuelve lo mismo que fopen_s()]; args.:
-    puntero a archivo (se modifica),
-    tamaño max del nombre archivo,
-    nombre archivo o protocolo a utilizar (MODE_TIMESTAMP ó "\0" para usar la estampa de tiempo),
-    puntero a nombre asignado al archivo finalmente, tamaño mayor o igual al especificado en arg. nº 2
+errno_t waypts_create_file(FILE** fp, const size_t sz, const char filename[], char* assigned);
+    /* Devuelve cero si consigue hacer el archivo [devuelve lo mismo que fopen_s() o fwrite() al inicializarlo]; args.:
+    fp: puntero a puntero de archivo (FILE*) (se modifica),
+    sz: tamaño max del nombre archivo,
+    filename: nombre archivo o protocolo a utilizar (MODE_TIMESTAMP ó "\0" para usar la estampa de tiempo),
+    assigned: puntero a nombre asignado al archivo finalmente, tamaño mayor o igual al especificado en arg. nº 2
     Devuelve errores (0 indica éxito):
         - 100: no puede asignarse memoria dinámica
         - 150: el nombre especificado no es adecuado (salida por pantalla del error)
