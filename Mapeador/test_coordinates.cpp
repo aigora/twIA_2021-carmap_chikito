@@ -16,14 +16,16 @@ Contiene la función encargada de calcular las coordenadas del robot, en funció
 #define ANGULAR_VELOCITY 1		//angular velocity of wheel rotation (1 is just an example) (rad/s)
 #define WHEEL_RADIUS 1			//(1 is just an example) (m)
 #define ROBOT_WIDTH 1			//(1 is just an example) (m)
+#define TIME 0.05				//minimum unit of time (discrete variable) (s)
 
 
 //units given in metrical system//
 typedef struct {
 
+	double pulsation_forward, pulsation_backwards, pulsation_right, pulsation_left;	//It contains the number of times that each button (forward, backward, right and left) has been pressed. 
 	double time_forwards, time_backwards, time_right, time_left;	//It contains the time that each button (forward, backward, right and left) has been pressed.
 	double rotation, distance, displacement;
-	double x, y;	//contains the coordinates of the robot
+	double x, y;	//It contains the coordinates of the robot
 
 }coordinate;
 
@@ -34,6 +36,10 @@ int main() {
 
 	//Declarate and initialize variable type coordinate
 	coordinate coord1, * p_coord1 = &coord1;
+	p_coord1->pulsation_forward = 0.0;
+	p_coord1->pulsation_backwards = 0.0;
+	p_coord1->pulsation_right = 0.0;
+	p_coord1->pulsation_left = 0.0;
 	p_coord1->time_forwards = 0.0;
 	p_coord1->time_backwards = 0.0;
 	p_coord1->time_right = 0.0;
@@ -49,14 +55,14 @@ int main() {
 
 	while (bool(true)) {	//es solo una prueba, no me juzgues, cierra el bucle tú solo
 
-		printf("Time forwards: ");
-		scanf_s("%lf", &p_coord1->time_forwards);
-		printf("Time backwards: ");
-		scanf_s("%lf", &p_coord1->time_backwards);
-		printf("Time right: ");
-		scanf_s("%lf", &p_coord1->time_right);
-		printf("Time left: ");
-		scanf_s("%lf", &p_coord1->time_left);
+		printf("Number of pulsations forwards: ");
+		scanf_s("%lf", &p_coord1->pulsation_forward);
+		printf("Number of pulsations backwards: ");
+		scanf_s("%lf", &p_coord1->pulsation_backwards);
+		printf("Number of pulsations right: ");
+		scanf_s("%lf", &p_coord1->pulsation_right);
+		printf("Number of pulsations left: ");
+		scanf_s("%lf", &p_coord1->pulsation_left);
 
 		CalculateCoordinate(p_coord1);
 
@@ -70,6 +76,11 @@ void CalculateCoordinate(coordinate* p_coord) {
 	// { S = wheel_radius * angular_velocity * time_right.
 	// { S = rotation * (robot_width / 2). 
 	// { rotation = 2 * (wheel_radius / robot_width) * angular_velocity * time_right.
+
+	p_coord->time_forwards = TIME * p_coord->pulsation_forward;
+	p_coord->time_backwards = TIME * p_coord->pulsation_backwards;
+	p_coord->time_right = TIME * p_coord->pulsation_right;
+	p_coord->time_left = TIME * p_coord->pulsation_left;
 
 	if (p_coord->time_forwards > 0) {
 
@@ -99,7 +110,11 @@ void CalculateCoordinate(coordinate* p_coord) {
 	//
 	p_coord->distance += p_coord->displacement;
 
-	//reset value of time variables and displacement to 0
+	//reset value of variables to 0
+	p_coord->pulsation_forward = 0.0;
+	p_coord->pulsation_backwards = 0.0;
+	p_coord->pulsation_right = 0.0;
+	p_coord->pulsation_left = 0.0;
 	p_coord->time_forwards = 0.0;
 	p_coord->time_backwards = 0.0;
 	p_coord->time_right = 0.0;
