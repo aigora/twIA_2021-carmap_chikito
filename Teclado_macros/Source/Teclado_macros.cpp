@@ -4,7 +4,7 @@
 #include <windows.h>
 #include "SerialClass/SerialClass.h"
 
-#define TAM 6
+#define TAM 6 //number of buttons we use
 
 typedef enum buttonPins {
 	pause = 2,quit,profileSwitch,start,save,fwd,turn
@@ -34,7 +34,7 @@ void main() {
 /*initializes enum vectors (buttons on keypad ) and keyboard*/
 void init(BUTTONS[], STATE[],Keyboard) { 
 	BUTTONS keypad[TAM] = {pause,quit,start,save,fwd,turn};
-	Keybpard->begin();
+	Keyboard->begin();
 }
 
 /*set up connection with Arduino in COM3 port*/
@@ -62,5 +62,5 @@ void press(int key) {
 }
 
 void leave(*Serial, *Keyboard) {
-	;
+	Arduino->~Serial();
 }
