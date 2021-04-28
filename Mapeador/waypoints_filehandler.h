@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <time.h> // Funciones para obtener la fecha y hora, y darles formato
 #include <string.h>
+#include <inttypes.h>
 
 #include "vector.h"
 

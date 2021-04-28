@@ -7,7 +7,7 @@
 int waypts_create_file(FILE** fp, size_t tam_nombre, const char proto_or_name[], char* filename)
 {
     int error = 0; // Variable genérica para guardar errores devueltos por funciones
-    size_t inicializador = 0; // Variable con la que se inicia el archivo, indica el número de puntos que hay
+    uint32_t inicializador = 0; // Variable con la que se inicia el archivo, indica el número de puntos que hay
     char* nombreArchivo = (char*)calloc(tam_nombre, sizeof(char));
     if (nombreArchivo == NULL) {
         return 100; // Error cuando no se puede asignar memoria
@@ -32,14 +32,14 @@ int waypts_create_file(FILE** fp, size_t tam_nombre, const char proto_or_name[],
     error = fopen_s(fp, nombreArchivo, "w+b"); // Se crea el archivo en modo escritura y lectura binaria, se devuelve error de esta función
     if (error or *fp == NULL) return error;
 
-    error = fwrite(&inicializador, sizeof(size_t), 1, *fp); // Ahora a error se le asigna el número de objetos asignados (debe ser 1)
+    error = fwrite(&inicializador, sizeof(uint32_t), 1, *fp); // Ahora a error se le asigna el número de objetos asignados (debe ser 1)
     if (error != 1) return ferror(*fp);
     
     return 0; // Todo sale bien
 }
 
 int waypts_bappend_vect(FILE* fp, vector2D* src, size_t* quantity) {
-    size_t n_vectors = 0;
+    uint32_t n_vectors = 0;
     int status = 0; // Variable genérica para guardar números de error o de variables asignadas
 
     // Escribimos vector en el archivo
@@ -57,7 +57,7 @@ int waypts_bappend_vect(FILE* fp, vector2D* src, size_t* quantity) {
     if (status) exit(202); // Error al colocar la posición del búfer
 
     // Leemos las cantidad de vectores guardados previamente
-    status = fread_s(&n_vectors, sizeof(size_t), sizeof(size_t), 1, fp);
+    status = fread_s(&n_vectors, sizeof(uint32_t), sizeof(uint32_t), 1, fp);
     if (status != 1) exit(211); // Error al leer del archivo
 
     n_vectors++; // Incrementamos en 1 la cantidad de vectores en el fichero
@@ -65,7 +65,7 @@ int waypts_bappend_vect(FILE* fp, vector2D* src, size_t* quantity) {
     status = fseek(fp, 0, SEEK_SET); // Colocamos cursor del búfer al inicio para modificar la cantidad de vectores que se han guardado
     if (status) exit(202); // Error al colocar la posición del búfer
 
-    status = fwrite(&n_vectors, sizeof(size_t), 1, fp); // Se guarda la cantidad de vectores que tendrá el archivo
+    status = fwrite(&n_vectors, sizeof(uint32_t), 1, fp); // Se guarda la cantidad de vectores que tendrá el archivo
     if (status != 1) exit(230); // No se guardó el elemento
 
     status = fflush(fp); // Forzamos la escritura al fichero
