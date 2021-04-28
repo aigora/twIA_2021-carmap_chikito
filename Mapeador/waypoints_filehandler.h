@@ -15,7 +15,7 @@
 
 #define MODE_TIMESTAMP "\0" // How to assign the name to the waypoint files
 
-errno_t waypts_create_file(FILE** fp, const size_t sz, const char filename[], char* assigned);
+int waypts_create_file(FILE** fp, const size_t sz, const char filename[], char* assigned);
     /* Devuelve cero si consigue hacer el archivo [devuelve lo mismo que fopen_s() o fwrite() al inicializarlo]; args.:
     fp: puntero a puntero de archivo (FILE*) (se modifica),
     sz: tamaño max del nombre archivo,
@@ -27,7 +27,7 @@ errno_t waypts_create_file(FILE** fp, const size_t sz, const char filename[], ch
         - O el retornado por fopen_s. Puede coincidir con alguno de los anteriores
     */
 
-errno_t waypts_bappend_vect(FILE* fp, vector2D* src, size_t* quantity);
+int waypts_bappend_vect(FILE* fp, vector2D* src, size_t* quantity);
     /* Añade 1 vector de dos componentes (src) al archivo apuntado por fp, en binario
     fp: puntero a arclhivo que se modifica
     src: vector que se concatena al archivo
@@ -35,7 +35,7 @@ errno_t waypts_bappend_vect(FILE* fp, vector2D* src, size_t* quantity);
     Devuelve 0 si funciona correctamente
     */
 
-errno_t waypts_bread_vect(FILE* fp, vector2D* dest);
+int waypts_bread_vect(FILE* fp, vector2D* dest);
     /* Lee un vector desde la posición de memoria del buffer, intentando asignar un vector
     Dado que la función depende de la ubicación del cursor del búfer, no la recomiendo más que para realizar tests de E/S,
     o tener muy presente el uso de fseek() durante la ejecución

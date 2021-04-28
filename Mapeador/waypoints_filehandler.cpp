@@ -4,9 +4,9 @@
 
 #include "waypoints_filehandler.h"
 
-errno_t waypts_create_file(FILE** fp, size_t tam_nombre, const char proto_or_name[], char* filename)
+int waypts_create_file(FILE** fp, size_t tam_nombre, const char proto_or_name[], char* filename)
 {
-    errno_t error = 0; // Variable genérica para guardar errores devueltos por funciones
+    int error = 0; // Variable genérica para guardar errores devueltos por funciones
     size_t inicializador = 0; // Variable con la que se inicia el archivo, indica el número de puntos que hay
     char* nombreArchivo = (char*)calloc(tam_nombre, sizeof(char));
     if (nombreArchivo == NULL) {
@@ -38,7 +38,7 @@ errno_t waypts_create_file(FILE** fp, size_t tam_nombre, const char proto_or_nam
     return 0; // Todo sale bien
 }
 
-errno_t waypts_bappend_vect(FILE* fp, vector2D* src, size_t* quantity) {
+int waypts_bappend_vect(FILE* fp, vector2D* src, size_t* quantity) {
     size_t n_vectors = 0;
     int status = 0; // Variable genérica para guardar números de error o de variables asignadas
 
@@ -77,7 +77,7 @@ errno_t waypts_bappend_vect(FILE* fp, vector2D* src, size_t* quantity) {
     return 0; // Escritura exitosa
 }
 
-errno_t waypts_bread_vect(FILE* fp, vector2D* dest) {
+int waypts_bread_vect(FILE* fp, vector2D* dest) {
     int fully_read_vects = fread_s(dest, sizeof(vector2D), 1, sizeof(vector2D), fp);
 
     if (fully_read_vects < 1) exit(202);

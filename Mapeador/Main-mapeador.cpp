@@ -34,7 +34,7 @@ void getCOM_port_s(wchar_t*, size_t);
     tamaño max de la cadena
     */
 
-errno_t command_Arduino_time_s(char* buffer, size_t sz, int left_wheel, int right_wheel);
+int command_Arduino_time_s(char* buffer, size_t sz, int left_wheel, int right_wheel);
     /* Genera comando con formato "t:+-[tiempo motor izq],+-[tiempo motor der];"
     el tamaño mínimo de buffer (sz) es 20, donde los tiempos están en milisegundos y no exceden 9999
     */
@@ -60,7 +60,7 @@ int main() // Main function
 
     if (Arduino->IsConnected()) { // Solo si el Arduino se puede conectar, se crea un archivo para guardar el progreso
         // Initializing file to be written
-        errno_t error = waypts_create_file(&fp_puntos, NAME_SZ, MODE_TIMESTAMP, nombreArchivoPuntos);
+        int error = waypts_create_file(&fp_puntos, NAME_SZ, MODE_TIMESTAMP, nombreArchivoPuntos);
 
         if (error == 100) { // Fallo asignando memoria dinámica
             printf("Error in memory assignment. Big oof for the programmer trying to figure this out.");
@@ -171,7 +171,7 @@ void getCOM_port_s(wchar_t* dest, size_t max) {
     return; // Fin de obtener puerto.
 }
 
-errno_t command_Arduino_time_s(char* buffer, size_t sz, int left_wheel, int right_wheel) {
+int command_Arduino_time_s(char* buffer, size_t sz, int left_wheel, int right_wheel) {
     if (sz < 20) return STRUNCATE;
     sprintf_s(buffer, sz, "t:%+0.4d,%+0.4d;", left_wheel, right_wheel);
     return 0;
