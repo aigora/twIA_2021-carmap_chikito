@@ -4,7 +4,7 @@
 
 #include "waypoints_filehandler.h"
 
-int waypts_create_file(FILE** fp, size_t tam_nombre, const char proto_or_name[], char* filename)
+int waypts_bcreate_file(FILE** fp, size_t tam_nombre, const char proto_or_name[], char* filename)
 {
     int error = 0; // Variable genérica para guardar errores devueltos por funciones
     uint32_t inicializador = 0; // Variable con la que se inicia el archivo, indica el número de puntos que hay
@@ -38,7 +38,18 @@ int waypts_create_file(FILE** fp, size_t tam_nombre, const char proto_or_name[],
     return 0; // Todo sale bien
 }
 
-int waypts_bappend_vect(FILE* fp, vector2D* src, size_t* quantity) {
+int waypts_bget_nvects(FILE* fp, uint32_t* dest) {
+    int status = fseek(fp, 0, SEEK_SET); // Colocamos cursor del búfer al inicio para leer la cantidad de vectores que se han guardado
+    if (status) return 1; // Error al colocar la posición del búfer
+
+    // Leemos las cantidad de vectores guardados previamente
+    status = fread_s(dest, sizeof(uint32_t), sizeof(uint32_t), 1, fp);
+    if (status != 1) return 2; // Error al leer del archivo
+
+    return 0;
+}
+
+int waypts_bappend_vect(FILE* fp, vector2D* src) {
     uint32_t n_vectors = 0;
     int status = 0; // Variable genérica para guardar números de error o de variables asignadas
 
@@ -53,12 +64,7 @@ int waypts_bappend_vect(FILE* fp, vector2D* src, size_t* quantity) {
     if (status != 0) exit(235); // Error al forzar escritura
 
     // Una vez confirmada la escritura de un vector, se puede incrementar el contador en el fichero
-    status = fseek(fp, 0, SEEK_SET); // Colocamos cursor del búfer al inicio para leer la cantidad de vectores que se han guardado
-    if (status) exit(202); // Error al colocar la posición del búfer
-
-    // Leemos las cantidad de vectores guardados previamente
-    status = fread_s(&n_vectors, sizeof(uint32_t), sizeof(uint32_t), 1, fp);
-    if (status != 1) exit(211); // Error al leer del archivo
+    waypts_bget_nvects(fp, &n_vectors);
 
     n_vectors++; // Incrementamos en 1 la cantidad de vectores en el fichero
 
@@ -71,16 +77,24 @@ int waypts_bappend_vect(FILE* fp, vector2D* src, size_t* quantity) {
     status = fflush(fp); // Forzamos la escritura al fichero
     if (status != 0) exit(235); // Error al forzar escritura
 
-    // Si se especifica una dirección no nula en el tercer argumento, se le copia la cantidad de vectores en el fichero
-    if (quantity != NULL) *quantity = n_vectors;
-
     return 0; // Escritura exitosa
 }
 
-int waypts_bread_vect(FILE* fp, vector2D* dest) {
-    int fully_read_vects = fread_s(dest, sizeof(vector2D), 1, sizeof(vector2D), fp);
+int waypts_bread_vect(FILE* fp, vector2D* dest, size_t bufferSize, uint32_t start, uint32_t N) {
+    int error = 0; // Variable que almacena errores
 
-    if (fully_read_vects < 1) exit(202);
+    error = fseek(fp, (sizeof(uint32_t) + sizeof(vector2D) * start), SEEK_SET);
 
-    return 0;
+    if (error) { // Si hay error al colocar el puntero del búfer
+        if (feof(fp)) { // Es que nos pasamos del tamaño del archivo
+            printf("Has intentado empezar a leer fuera del archivo");
+            exit(211);
+        }
+        else { // Cualquier otro extraño error
+            printf("Error desconocido ubicando bufer para lectura");
+            exit(212);
+        }
+    }
+
+    return fread_s(dest, bufferSize, sizeof(vector2D), N, fp); // Devuelve cantidad de elementos asignados
 }

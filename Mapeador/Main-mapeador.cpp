@@ -60,7 +60,7 @@ int main() // Main function
 
     if (Arduino->IsConnected()) { // Solo si el Arduino se puede conectar, se crea un archivo para guardar el progreso
         // Initializing file to be written
-        int error = waypts_create_file(&fp_puntos, NAME_SZ, MODE_TIMESTAMP, nombreArchivoPuntos);
+        int error = waypts_bcreate_file(&fp_puntos, NAME_SZ, MODE_TIMESTAMP, nombreArchivoPuntos);
 
         if (error == 100) { // Fallo asignando memoria dinámica
             printf("Error in memory assignment. Big oof for the programmer trying to figure this out.");
@@ -89,23 +89,38 @@ int main() // Main function
     }
 
     // Ejemplo para esciribir un vector o punto cualquiera en el archivo binario //
-    printf("\nEjemplo escritura en fichero: escribiendo puntos (0,0) y (1,1)");
-    vector2D vector = { 0 , 0 }; // Iniciamos vector
-    waypts_bappend_vect(fp_puntos, &vector, NULL); // Escribimos sin retornar el número de elementos escritos
+    printf("\n\nEjemplo escritura en fichero: escribiendo puntos (0, *aleatorio*) y (1, *aleatorio*)");
+    vector2D vector = { 0 , (double)rand() / RAND_MAX }; // Iniciamos vector 1
+    waypts_bappend_vect(fp_puntos, &vector); // Escribimos el vector a fp_puntos
 
     size_t num_de_puntos_en_fichero;
-    vector = { 1, 1 };
-    waypts_bappend_vect(fp_puntos, &vector, &num_de_puntos_en_fichero); // Ahora sí retornamos nº de puntos escritos a num_de_puntos_en_fichero
+    vector = { 1, (double)rand() / RAND_MAX };
+    waypts_bappend_vect(fp_puntos, &vector); // Escribimos el segundo vector
+    waypts_bget_nvects(fp_puntos, &num_de_puntos_en_fichero); // Obtenemos numero de puntos escritos en fichero
     // Ahora num_de_puntos_en_fichero debe ser 2;
     printf("\nEl numero de puntos en el fichero es: %u\nLeyendo datos escritos...\nPunto 1: ", num_de_puntos_en_fichero);
 
-    fseek(fp_puntos, sizeof(size_t), SEEK_SET); // Ponemos el cursor al inicio de los puntos, no del fichero
-    waypts_bread_vect(fp_puntos, &vector); // Hacemos la lectura de un elemento
-    vector2D_print(vector, DEF_PRECISION); // Imprimimos elemento
+    // Lectura de un vector, el primero de todos (posición 0)
+    vector2D unPunto;
+    waypts_bread_vect(fp_puntos, &unPunto, sizeof(unPunto), 0, 1);
+    vector2D_print(unPunto, DEF_PRECISION); // Imprimimos elemento
 
-    printf("\nPunto 2: "); // Idem anterior, solo que el cursor del búfer ya está colocado para leer el siguiente punto
-    waypts_bread_vect(fp_puntos, &vector);
-    vector2D_print(vector, DEF_PRECISION);
+    // Escribimos otro elemento
+    printf("\nMe apetece anadirle otro vector. Tendra el valor (2, *aleatorio*)");
+    vector = { 2, (double)rand() / RAND_MAX };
+    waypts_bappend_vect(fp_puntos, &vector);
+    waypts_bget_nvects(fp_puntos, &num_de_puntos_en_fichero);
+    printf("\nNueva cantidad de puntos en fichero = %u", num_de_puntos_en_fichero);
+
+    // Leemos el par de puntos en posiciones 2 y 3
+    printf("\nPuntos 2 y 3: ");
+    vector2D dosPuntos[2];
+    int assigned = waypts_bread_vect(fp_puntos, dosPuntos, sizeof(dosPuntos), 1, 2); // Hay que leer dos elementos desde el elemento en start
+                                                                      // Recuerda que dosPuntos ahora es un puntero
+    vector2D_print(dosPuntos[0], DEF_PRECISION);
+    putchar('\t');
+    vector2D_print(dosPuntos[1], DEF_PRECISION);
+    printf("\nAssignados = %d\n", assigned);
     // Fin del ejemplo //
 
     // Ejemplo que envía comando de movimiento por tiempo al Arduino //
