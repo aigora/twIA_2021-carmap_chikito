@@ -3,59 +3,41 @@
  *  This file is the main program for the macro keyboard.
  */
 
-#include "Keyboard.h"
-
-#define PAUSE 2        //(press joystick: pause movement)
-#define QUIT 3     //"quit"
-#define START 4  //("start/end" button)
-#define SAVE 5  //("save" button)
-#define FWD 6  //"move" button (which is pressed and held down);
-#define TURN 7  //"return" button
+/*pins of controller used by pushbuttons*/
+#define PAUSE 2        //press to stop robot's movement; then press to move again.
+#define QUIT 3     //stops and closes Main program
+#define START 4  //starts the engines and begins recording of robot's path; press again to end
+#define SAVE 5  //sends data of robot's position to Main program (which draws the path)
+#define N 6  //press or hold down to keep robot moving forward
+#define TURN 7  //ends recording of the path; robot turns around and returns that same path
+/*#define S 8
+#define W 9
+#define E 10*/
 
 void setup() {
   Serial.begin(9600); while(!Serial){;}
-  const int button_pins[]={PAUSE,QUIT,START,SAVE,FWD,TURN};
+  const int button_pins[]={PAUSE,QUIT,START,SAVE,N,TURN};
   int size=(sizeof(button_pins)/sizeof(int)),k=0;
-  for (k=0;k<size;k++){
-    pinMode(button_pins[k],INPUT);
-  }
-  Keyboard.begin();
+  for (k=0;k<size;k++){pinMode(button_pins[k],INPUT);}
 }
 
+/*main program which runs while arduino is connected*/
 void loop(){
-  const int buttons[]={PAUSE,QUIT,START,SAVE,FWD,TURN};
+  const int buttons[]={PAUSE,QUIT,START,SAVE,N,TURN};
+  int size=(sizeof(buttons)/sizeof(int)),i=0;
   int buttons_now[]={HIGH,HIGH,HIGH,HIGH,HIGH,HIGH};
-  int t=0,i,j;
-  int start=HIGH;
-  do{
-    delay(30);
-    start=digitalRead(buttons[3]);
-  } while (start==HIGH);
   for (i=0;i<size;i++){
     buttons_now[i]=digitalRead(buttons[i]);
-    if (buttons_now[i]==LOW){
-      delay(30);
+    if (buttons_now[i]==LOW){ //prints message through serial port
       switch(i){
-        case 2:
-        Keyboard.press(KEY_ESC); delay(50); Keyboard.release(KEY_ESC); break;
-        case 3:
-        Keyboard.press(KEY_LEFT_ALT); delay(50); Keyboard.release(KEY_LEFT_ALT); break;
-        case 4: break;
-        case 5:
-        Keyboard.press(KEY_KEYPAD_ENTER); delay(50); Keyboard.release(KEY_KEYPAD_ENTER); break;
-        case 6:
-        Keyboard.press(KEY_RIGHT_CTRL); Keyboard.press('s');
-        delay(50);
-        Keyboard.release(KEY_RIGHT_CTRL); Keyboard.release('s'); break;
-        case 7: Keyboard.press(KEY_ARROW_UP); delay(50); t+=50;  //time counter by 50ms
-        buttons_now[i]=digitalRead(buttons[i]);
-        
-        Keyboard.release(KEY_ARROW_UP);
-        break;
-        case 8: Keyboard.press(KEY_BACKSPACE); delay(50); Keyboard.release(KEY_BACKSPACE); break;
-        default: break;
+        case 2: Serial.println("pause"); break;
+        case 3: Serial.println("leave"); break;
+        case 4: Serial.println("start"); break;
+        case 5: Serial.println("send_point: "); /*also prints/sends coordinates of robot*/ break;
+        case 6: Serial.println("go_north"); break;
+        case 7: Serial.println("go_back"); break;
+        default: Serial.println(); break;
         }
-      if(Serial.available>0) Serial.println(i);
       }
-    }
+    } delay(500);
   }
