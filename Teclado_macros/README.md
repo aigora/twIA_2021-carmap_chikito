@@ -1,16 +1,18 @@
 ## Programa del teclado Arduino
 Objetivo: Crear una interfaz (HID) para controlar el robot y realizar comandos, además de generar los datos de posición y rotación que necesitan los programas mapeador y robot CMC para funcionar.
 Se conecta en el puerto USB.
-Funciones principales:
-- Lectura digital: pulsadores
-Simulan teclas y comandos simples del teclado pero están nombradas de forma particular;
-"START" - pulsa la tecla Enter 
-"QUIT" - se corresponde con la combinación Alt+F4 o el comando _taskkill_ de la consola en Windows
-"SAVE" - pulsa las teclas Ctrl y 'S' para _guardar_ la trayectoria
-"PAUSE" - pulsa la tecla Esc
-"move" o "forward" - pulsa la flecha superior para mover el robot hacia _adelante_ (esta tecla registra el tiempo que se mantiene pulsada)
-"TURN" o "return"  - pulsa la tecla _backspace_ (el comando asociado con esta tecla es complejo y se codifica en el programa principal) para que el robot gire regrese sobre su trayectoria.
-- Lectura analógica: _joystick_
-El joystick maneja los ángulos de giro del robot, pero no su movimiento. (el botón que se pulsa al presionar el joystick es uno de los pulsadores)
 
 ***
+
+El teclado funciona como un mando a distancia para controlar el robot en remoto, se conecta al ordenador por el puerto USB y funciona con un simple código en Arduino y una aplicación en C++ que acciona las teclas del ordenador y realiza funciones;
+- Los cuatro botones en forma de cruz son equivalentes a pulsar las teclas 'n','s','e' y 'o';
+- Los motores del robot están programados para que el movimiento se pueda controlar por los pulsadores
+
+El teclado funciona como un _macro keyboard_; cada pulsación en él realiza una serie de pulsaciones y funciones más complicadas codificadas en los distintos módulos del proyecto;
+Funciones principales:
+- Pausar; detiene el movimiento del robot al pulsarlo, o reanuda el movimiento si este estaba detenido
+- Salir; detiene y apaga el robot y cierra todo
+- Start; comienza la grabación de la trayectoria del robot, o la finaliza y guarda si ya estaba empezando
+- Guardar; envía un vector numérico con las coordenadas del robot al programa principal
+- Cuatro botones que funcionan como teclas direccionales se ocupan de los movimientos y giros
+Las funciones de todas estas teclas están definidas en los códigos del proyecto.
