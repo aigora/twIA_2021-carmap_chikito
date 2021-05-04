@@ -1,76 +1,81 @@
-void setup() {
-  // put your setup code here, to run once:
- Serial.begin(9600);
- while(!Serial) {;}
-}
+// Referencas a Bibliotecas
 
-void loop() {
-  // put your main code here, to run repeatedly:
- if(Serial.available()>0) //Si hay datos disponibles del PC
-  {
-  procesar_mensaje();
-  String str = Serial.readStringUntil('\n'); // Lectura de una cadena
-  str.toUpperCase(); // Conversión a mayúsculas
-  for (int i=0;i<str.length();i++) // Recorrido de la cadena
-  {
-   Serial.print(str.charAt(i)); // Envío carácter a carácter
-   delay(50);
-  }
-  Serial.println();
- }
- delay(50);
-}
+// Enumeraciones que facilitan la lectura del código
 
-void procesar_mensaje(void)
+// Variables globales
+
+void setup()
 {
- int tMotor1_IZQ, tMotor1_DER, tMotor2_IZQ, tMotor2_DER;
- unsigned int tiempoMilis;
- char mov[4],sent[4];
- bool tipoMovimiento;
- bool sentido;
- 
- String cadena=Serial.readStringUntil('\n'); //Lee el mensaje
- String valor1=Serial.readStringUntil('\n'); //Lee el valor del motor 1 izq 
- String valor2=Serial.readStringUntil('\n'); //Lee el valor del motor 1 dcha
- String valor3=Serial.readStringUntil('\n'); //Lee el valor del motor 2 izq
- String valor4=Serial.readStringUntil('\n'); //Lee el valor del motor 2 dcha
- 
- tMotor1_IZQ=valor1.toInt(); //Transforma a valor entero valor1
- tMotor1_DER=valor2.toInt(); //Transforma a valor entero valor3
- tMotor2_IZQ=valor3.toInt(); //Transforma a valor entero valor2
- tMotor2_DER=valor4.toInt(); //Transforma a valor entero valor4
- 
- if(tipoMovimiento) 
- {
-  strcpy(mov, "lin");
-  if(sentido)
+  // Tareas de configuración 
+  Serial.begin(9600);
+}
+
+void loop()
+{
+    
+  if (Serial.available() > 0)  // Si hay mensajes procedentes del PC  
+    procesar_accion();
+	
+   // Resto de acciones 
+  delay(50);
+}
+
+int procesar_accion(void)
+{
+  unsigned int tiempoMilis=0;
+  char movimiento[4],sentido[4],tiempo[6];
+  String cadena = Serial.readStringUntil('\n'); // Lee mensaje
+  if(cadena[0]=='t' && cadena[1]==':') 
   {
-   strcpy(sent, "del");
-   tMotor1_DER=tMotor2_DER=tiempoMilis;
-   tMotor1_IZQ=tMotor2_IZQ=00000;
+    for(int i=0;i<3;i++)
+    {
+      movimiento[i]=cadena[i+2];
+    }
+    movimiento[3]=0;
+    for(int j=0;j<3;j++)
+    {
+      sentido[j]=cadena[j+6];
+    }
+    sentido[3]=0;
+    for(int k=0;k<5;k++)
+    {
+      tiempo[k]=cadena[k+11];
+    }
+    tiempo[5]=0;
+    tiempoMilis= atoi(tiempo);
+    if(movimiento=="lin")
+    {
+      if(sentido=="del"){
+        //Movimiento lineal hacia delante
+      }
+      else if(sentido=="atr"){
+        //
+      }
+      else{
+      //Error  
+      }
+    }
+    else if(movimiento=="rot"){
+      if(sentido=="der"){
+        //Movimiento rotacional hacia la derecha
+      }
+      else if(sentido=="izq"){
+        //
+      }
+      else{
+        //Error
+      }
+    }
+    else{
+      //Error
+      return 15;
+    }
   }
-  else
-  {
-   strcpy(sent, "atr");
-   tMotor1_IZQ=tMotor2_IZQ=tiempoMilis;
-   tMotor1_DER=tMotor2_DER=00000;
+  else{
+    //Error
+    return 1;
   }
- }
- else
- {
-  strcpy(mov, "rot");
-  if(sentido)
-  {
-   strcpy(sent, "izq");
-   tMotor2_DER=tMotor1_IZQ=tiempoMilis;
-   tMotor1_DER=tMotor2_IZQ=00000;
-  }
-  else
-  {
-   strcpy(sent, "der");
-   tMotor1_DER=tMotor2_IZQ=tiempoMilis;
-   tMotor1_IZQ=tMotor2_DER=00000;
-  }
- }
- 
+  delay(tiempoMilis);
+  parar(); //Parar
+  return 0;
 }
