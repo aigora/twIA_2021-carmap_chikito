@@ -1,13 +1,3 @@
-#define BUF 200
-
-#define MOV_lineal true
-#define MOV_haciaDelante true
-#define MOV_haciaAtras false
-
-#define MOV_rotacion false
-#define MOV_haciaIzq true
-#define MOV_haciaDer false
-
 void setup() {
   // put your setup code here, to run once:
  Serial.begin(9600);
