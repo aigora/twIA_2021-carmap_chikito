@@ -129,6 +129,7 @@ void CalculateCoordinate(coordinate* p_coord) {
 */
 
 
+
 #include <stdio.h>
 #include <math.h>
 
@@ -145,7 +146,12 @@ void CalculateCoordinate(coordinate* p_coord) {
 
 typedef struct {
 
-	int pulsation_forward, pulsation_backwards, pulsation_right, pulsation_left;
+	int forward, backwards, right, left;
+
+}pulsation;
+
+typedef struct {
+
 	double rotation, distance, displacement;
 	double x, y;	//It contains the coordinates of the robot
 
@@ -157,17 +163,20 @@ typedef struct {
 
 }time;
 
-void Calc_Coordinate_Time(coordinate*, time*);
-//void CalculateTime();
+void Calc_Coordinate_Time(pulsation*, coordinate*, time*);
+
 
 int main(){
 
+	//Declarate and initialize variable type Pulsation
+	pulsation pulsation1, *p_pulsation1 = &pulsation1;
+	p_pulsation1->forward = 0;
+	p_pulsation1->backwards = 0;
+	p_pulsation1->right = 0;
+	p_pulsation1->left = 0;
+
 	//Declarate and initialize variable type Coordinate
 	coordinate coord1, * p_coord1 = &coord1;
-	p_coord1->pulsation_forward = 0.0;
-	p_coord1->pulsation_backwards = 0.0;
-	p_coord1->pulsation_right = 0.0;
-	p_coord1->pulsation_left = 0.0;
 	p_coord1->rotation = 0.0;
 	p_coord1->distance = 0.0;
 	p_coord1->displacement = 0.0;
@@ -182,12 +191,12 @@ int main(){
 	p_time1->left = 0.0;
 
 	//execute functions
-	Calc_Coordinate_Time(p_coord1, p_time1);
+	Calc_Coordinate_Time(p_pulsation1, p_coord1, p_time1);
 	
 
 }
 
-void Calc_Coordinate_Time(coordinate* p_coord, time* p_time) {
+void Calc_Coordinate_Time(pulsation* p_pulsation, coordinate* p_coord, time* p_time) {
 
 	// FORMULAS USED: //
 	// { S = wheel_radius * angular_velocity * time_forward.
@@ -199,7 +208,7 @@ void Calc_Coordinate_Time(coordinate* p_coord, time* p_time) {
 	p_time->right = 0.0;
 	p_time->left = 0.0;
 
-	if (p_coord->pulsation_forward == 1) {
+	if (p_pulsation->forward == 1) {
 
 		p_coord->displacement = (2 * PI * WHEEL_RADIUS) * WHEEL_TURN;
 		p_coord->x += (p_coord->displacement) * sin(p_coord->rotation);
@@ -209,7 +218,7 @@ void Calc_Coordinate_Time(coordinate* p_coord, time* p_time) {
 		//p_time->forward = (2 * PI * WHEEL_TURN) / ANGULAR_VELOCITY;
 
 	}
-	else if (p_coord->pulsation_backwards == 1) {
+	else if (p_pulsation->backwards == 1) {
 
 		p_coord->displacement = (2 * PI * WHEEL_RADIUS) * WHEEL_TURN;
 		p_coord->x -= (p_coord->displacement) * sin(p_coord->rotation);
@@ -219,14 +228,14 @@ void Calc_Coordinate_Time(coordinate* p_coord, time* p_time) {
 		//p_time->backwards = (2 * PI * WHEEL_TURN) / ANGULAR_VELOCITY;
 
 	}
-	else if (p_coord->pulsation_right == 1) {
+	else if (p_pulsation->right == 1) {
 
 		p_coord->rotation += ROT_ANGLE;
 
 		p_time->right = (ROT_ANGLE * ROBOT_WIDTH) / (2 * WHEEL_RADIUS * ANGULAR_VELOCITY);
 
 	}
-	else if (p_coord->pulsation_left == 1) {
+	else if (p_pulsation->left == 1) {
 
 		p_coord->rotation -= ROT_ANGLE;
 
@@ -237,10 +246,10 @@ void Calc_Coordinate_Time(coordinate* p_coord, time* p_time) {
 	p_coord->distance += p_coord->displacement;
 
 	//reset value of variables to 0
-	p_coord->pulsation_forward = 0;
-	p_coord->pulsation_backwards = 0;
-	p_coord->pulsation_right = 0;
-	p_coord->pulsation_left = 0;
+	p_pulsation->forward = 0;
+	p_pulsation->backwards = 0;
+	p_pulsation->right = 0;
+	p_pulsation->left = 0;
 	p_coord->displacement = 0.0;
 
 	//show coordinates
