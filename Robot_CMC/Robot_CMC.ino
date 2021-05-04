@@ -2,20 +2,20 @@
  *  This file is the main program for the robot Chikito.
  */
  //MOTOR 1 ES EL MOTOR DE LA DERECHA
-#define motorIZQ1 6
-#define motorDER1 7
+#define motor1_IZQ 6
+#define motor1_DER 7
 
-//MOTOR 2 ES EK MOTOR DE LA IZQUIERDA
-#define motorIZQ2 8
-#define motorDER2 9
+//MOTOR 2 ES EL MOTOR DE LA IZQUIERDA
+#define motor2_IZQ 8
+#define motor2_DER 9
 
 void setup() {
   // put your setup code here, to run once:
-  pinMode(motorIZQ1,OUTPUT);
-  pinMode(motorDER1,OUTPUT);
+  pinMode(motor1_IZQ,OUTPUT);
+  pinMode(motor1_DER,OUTPUT);
   
-  pinMode(motorIZQ2,OUTPUT);
-  pinMode(motorDER2,OUTPUT);
+  pinMode(motor2_IZQ,OUTPUT);
+  pinMode(motor2_DER,OUTPUT);
 
 }
 
@@ -89,37 +89,37 @@ void izquierda()
 //CUERPOS DE FUNCIONES DE MOTORES
 void motor1DER()
 {
-  digitalWrite(motorIZQ1,LOW);
-  digitalWrite(motorDER1,HIGH);
+  digitalWrite(motor1_IZQ,LOW);
+  digitalWrite(motor1_DER,HIGH);
 }
 
 void motor1IZQ()
 {
-  digitalWrite(motorIZQ1,HIGH);
-  digitalWrite(motorDER1,LOW);
+  digitalWrite(motor1_IZQ,HIGH);
+  digitalWrite(motor1_DER,LOW);
 }
 
 void motor2DER()
 {
-  digitalWrite(motorIZQ2,LOW);
-  digitalWrite(motorDER2,HIGH);
+  digitalWrite(motor2_IZQ,LOW);
+  digitalWrite(motor2_DER,HIGH);
 }
 
 void motor2IZQ()
 {
-  digitalWrite(motorIZQ2,HIGH);
-  digitalWrite(motorDER2,LOW);
+  digitalWrite(motor2_IZQ,HIGH);
+  digitalWrite(motor2_DER,LOW);
  
 }
 
 void motor1PARA()
 {
-  digitalWrite(motorIZQ1,LOW);
-  digitalWrite(motorDER1,LOW);
+  digitalWrite(motor1_IZQ,LOW);
+  digitalWrite(motor1_DER,LOW);
 }
 
 void motor2PARA()
 {
-  digitalWrite(motorIZQ2,LOW);
-  digitalWrite(motorDER2,LOW); 
+  digitalWrite(motor2_IZQ,LOW);
+  digitalWrite(motor2_DER,LOW); 
 }
