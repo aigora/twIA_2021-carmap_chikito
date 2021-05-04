@@ -88,6 +88,7 @@ int main() // Main function
         return 40;
     }
 
+    /*
     // Ejemplo para esciribir un vector o punto cualquiera en el archivo binario //
     printf("\n\nEjemplo escritura en fichero: escribiendo puntos (0, *aleatorio*) y (1, *aleatorio*)");
     vector2D vector = { 0 , (double)rand() / RAND_MAX }; // Iniciamos vector 1
@@ -128,34 +129,24 @@ int main() // Main function
     command_Arduino_time_s(mov_ruedas, sizeof(mov_ruedas), 750, -100); // Tiempos en milisegundos, el sentido depende del signo (positivo = hacia delante)
     Arduino->WriteData(mov_ruedas, strlen(mov_ruedas));
     printf("\nHemos enviado al Arduino el comando:\n%s", mov_ruedas);
-    // Fin del ejemplo //
+    // Fin del ejemplo // */
 
     // Ejemplo de Moodle para la conexión Bluetooth
+    printf("\nArduino conectado\n");
     while (Arduino->IsConnected()) // Mientras el Arduino esté conectado se puede proceder
     {
-        if (contador == 0)
-            printf("Arduino conectado\n");
-        sprintf_s(BufferSalida, "Mensaje %d enviado\n", contador);
-        printf("Enviando %s", BufferSalida);
-        Arduino->WriteData(BufferSalida, strlen(BufferSalida));
+        // Entrada de datos - pulsaciones del teclado
+
+        // Cómputo de coordenadas de salida
+
+        // Enviar comando al robot
+
+        // Guardar vector posición
+
+        // Imprimir posición en el mapa / pantalla
+
+        Sleep(1000); // Esperamos a que se mueva el robot
         contador++;
-        intentos_lectura = 0;
-        cadena[0] = '\0';
-        while (intentos_lectura < 10)
-        {
-            BufferEntrada[0] = '\0';
-            bytesRecibidos = Arduino->ReadData(BufferEntrada, sizeof(char) * 199);
-            if (bytesRecibidos != -1)
-            {
-                BufferEntrada[bytesRecibidos] = '\0';
-                strcat_s(cadena, BufferEntrada);
-                printf("%d Intento leo %d bytes: %s\n", intentos_lectura, bytesRecibidos, BufferEntrada);
-            }
-            intentos_lectura++;
-            Sleep(500);
-        }
-        printf("Mensaje recibido: %s\n\n", cadena);
-        Sleep(1000);
     }
 
     // Cerramos el archivo
