@@ -157,6 +157,7 @@ int main() // Main function
         // Cómputo de coordenadas de salida
 
         // Enviar comando al robot
+        Arduino->WriteData(BufferSalida, strlen(BufferSalida));
 
         // Guardar vector posición
 
