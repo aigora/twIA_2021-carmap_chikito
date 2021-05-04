@@ -8,6 +8,7 @@
 #include <wchar.h> // Para usar los caracteres amplios (modificación y paso de valores a SerialClass.h)
 #include <iso646.h> // "||" se puede escribir como "or" y "&&" como "and" - legibilidad: https://cplusplus.com/reference/ciso646/
 #include <math.h> // Funciones matemáticas
+#include <stdbool.h> // Usamos variables booleanas para el tipo de movimiento y su sentido
 
 #include "vector.h" // Custom library to create and operate vectors easily
 #include "SerialClass/SerialClass.h" // Retrieved from: https://github.com/Gmatarrubia/LibreriasTutoriales (modified local resources)
@@ -16,6 +17,14 @@
 // Bluetooth definitions
 #define PORT_SZ 15 // Port wide character string size
 #define BUF 200
+//Commands
+#define MOV_lineal true
+#define MOV_haciaDelante true
+#define MOV_haciaAtras false
+
+#define MOV_rotacion false
+#define MOV_haciaIzq true
+#define MOV_haciaDer false
 
 // File handling definitions
 #define NAME_SZ 50
@@ -34,9 +43,12 @@ void getCOM_port_s(wchar_t*, size_t);
     tamaño max de la cadena
     */
 
-int command_Arduino_time_s(char* buffer, size_t sz, int left_wheel, int right_wheel);
-    /* Genera comando con formato "t:+-[tiempo motor izq],+-[tiempo motor der];"
-    el tamaño mínimo de buffer (sz) es 20, donde los tiempos están en milisegundos y no exceden 9999
+int command_Arduino_time_s(char* buffer, size_t sz, bool tipoMovimiento, bool sentido, unsigned int tiempoMilis);
+    /* Genera comando con formato "t:tipo_movimiento,sentido,tiempo;"
+    el tamaño mínimo de buffer (sz) es 18
+    tipo_movimiento: MOV_lineal o MOV_rotacion
+    sentido: MOV_haciaDelante, MOV_haciaAtras, MOV_haciaIzq o MOV_haciaDer
+    tiempoMillis: max 5 cifras
     */
 
 int main() // Main function
@@ -125,11 +137,16 @@ int main() // Main function
     // Fin del ejemplo //
 
     // Ejemplo que envía comando de movimiento por tiempo al Arduino //
-    char mov_ruedas[50]; // Creamos una string de al menos 20 chars. Ver descripción en la declaración
-    command_Arduino_time_s(mov_ruedas, sizeof(mov_ruedas), 750, -100); // Tiempos en milisegundos, el sentido depende del signo (positivo = hacia delante)
-    Arduino->WriteData(mov_ruedas, strlen(mov_ruedas));
-    printf("\nHemos enviado al Arduino el comando:\n%s", mov_ruedas);
-    // Fin del ejemplo // */
+    if (command_Arduino_time_s(cadena, BUF, MOV_lineal, MOV_haciaDelante, 56321) != 0) printf("ERROR");
+    printf("%s\n", cadena);
+    if (command_Arduino_time_s(cadena, BUF, MOV_lineal, MOV_haciaAtras, 51) != 0) printf("ERROR");
+    printf("%s\n", cadena);
+    if (command_Arduino_time_s(cadena, BUF, MOV_rotacion, MOV_haciaIzq, 123651) != 0) printf("ERROR");
+    printf("%s\n", cadena);
+    if (command_Arduino_time_s(cadena, BUF, MOV_rotacion, MOV_haciaDer, 2000) != 0) printf("ERROR");
+    printf("%s\n", cadena);
+    // Fin del ejemplo //
+    */
 
     // Ejemplo de Moodle para la conexión Bluetooth
     printf("\nArduino conectado\n");
@@ -177,8 +194,28 @@ void getCOM_port_s(wchar_t* dest, size_t max) {
     return; // Fin de obtener puerto.
 }
 
-int command_Arduino_time_s(char* buffer, size_t sz, int left_wheel, int right_wheel) {
-    if (sz < 20) return STRUNCATE;
-    sprintf_s(buffer, sz, "t:%+0.4d,%+0.4d;", left_wheel, right_wheel);
+int command_Arduino_time_s(char* buffer, size_t sz, bool tipoMovimiento, bool sentido, unsigned int tiempoMilis) {
+    if (sz < 18) return STRUNCATE; // El tamaño del comando es mínimo 17 contando el carácter terminador, ej. "t:rot,izq,02035;\0"
+    if (tiempoMilis > 32767) return EDOM; // El tamaño de un int en el Arduino ocupa 2 bytes. Sobrepasar este número produce un comportamiento indefinido en el Arduino
+    char mov[4], sent[4]; // Aquí se almacenan los cachos de texto que luego se mandan al Robot
+    if (tipoMovimiento) { // Es desplazamiento
+        strcpy_s(mov, "lin");
+        if (sentido) { // Hacia delante
+            strcpy_s(sent, "del");
+        }
+        else { // Hacia atrás
+            strcpy_s(sent, "atr");
+        }
+    }
+    else { // Es rotacion
+        strcpy_s(mov, "rot");
+        if (sentido) { // Hacia la izquierda
+            strcpy_s(sent, "izq");
+        }
+        else { // Hacia la derecha
+            strcpy_s(sent, "der");
+        }
+    }
+    sprintf_s(buffer, sz, "t:%s,%s,%5u;", mov, sent, tiempoMilis);
     return 0;
 }
