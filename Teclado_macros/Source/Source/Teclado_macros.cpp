@@ -5,26 +5,46 @@
 #include "Keyboard/Keyboard.h"
 
 #define BUFF 200
+#define Key_N "N"
+#define Key_S "S"
+#define Key_E "E"
+#define Key_O "O"
 
 /*functions' prototypes*/
 void connect(Serial*,char []);
 void endConnection(Serial*);
+int findKey(char[],char[]);
 void press(int);
 
+int compare(char buff[],char keyName[]){
+	if(sizeof(buff))!=sizeof(keyName) return(-1));
+	int k; for(k=0;k<sizeof(buff)/sizeof(char)){
+		if(buff[k])!=keyName[k]] return(-1);
+	}
+	if(keyName==Key_N) return 7;
+	if(keyName==Key_S) return 8;
+	if(keyName==Key_E) return 9;
+	if(keyName==Key_O) return 10;
+	else return(-1);
+}
+
 void main() {
-	Serial* Arduino; Keyboard_* keyboard;
-	char port[] = "COM3", buffer[BUFF];
-	const char key_N[]="N",key_S[]="S",key_E[]="E",key_W[]="W";
+	Serial* Arduino; Keyboard_* Keyboard;
+	char port[] = "COM3", *buffer=(char*)malloc(BUFF,sizeof(char));
+	char arrowpad[][]={{Key_N},{Key_S},{Key_E},{Key_O}};
 	int nBytes=0,key=0;
-	connect(Arduino, port);
+	connect(Arduino,port);
+	keyboard->begin();
 	while (Arduino->IsConnected()) { 
 		nBytes=Arduino->ReadData(buffer,sizeof(char)*nBytes);
-		Sleep(500);
 		if(nBytes!=-1){ 
-			buffer[nBytes]='\0';
+			buffer[nBytes-1]='\0'; free(buffer+nBytes);
+			key=findKey(buffer); press(key);
 		}
+		Sleep(500); Keyboard.releaseAll();
 	}
 	endConnection(Arduino);
+	Keyboard.releaseAll(); Keyboard.end();
 }
 
 /*set up connection with Arduino in COM3 port*/
@@ -37,15 +57,36 @@ void endConnection(Serial* Arduino) {
 	Arduino->~Serial();
 }
 
-void press(int){
-	case 1:break;
-	case 2:break;
-	case 3:break;
-	case 4:break;
-	case 5:break;
-	case 6:break;
-	case 7:break;
-	case 8:break;
-	case 9:break;
-	default:break;
+/*reads message recevied through Serial and
+returns positive integer if there is a macro associated with it;
+returns minus one if not*/
+int findKey(char buff[] char keyName[]){
+	if(sizeof(buff))!=sizeof(keyName) return(-1));
+	int*k=calloc(sizeof(int));
+	for(k=0;k<sizeof(buff)/sizeof(char)){
+		if(buff[k]!=keyName[k]) return(-1);
+	}
+	free(k);
+	if(keyName==Key_N) return 7;
+	if(keyName==Key_S) return 8;
+	if(keyName==Key_E) return 9;
+	if(keyName==Key_O) return 10;
+	else return(-1);
+}
+
+/*presses keys in computer keyboard according to pushbuttons of HID*/
+void press(int key){
+	switch(key){
+		case 1:break;
+		case 2:break;
+		case 3:break;
+		case 4:break;
+		case 5:break;
+		case 6:break;
+		case 7: Keyboard.press(0x11); break;
+		case 8: Keyboard.press(0x16); break;
+		case 9: Keyboard.press(0x08); break;
+		case 10:Keyboard.press(0x1A); break;
+		default:break;
+	}
 }
