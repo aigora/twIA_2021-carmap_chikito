@@ -13,20 +13,8 @@
 /*functions' prototypes*/
 void connect(Serial*,char []);
 void endConnection(Serial*);
-int findKey(char[],char[]);
+int findKey(char[]);
 void press(int);
-
-int compare(char buff[],char keyName[]){
-	if(sizeof(buff)!=sizeof(keyName) return(-1));
-	int k; for(k=0;k<sizeof(buff)/sizeof(char)){
-		if(buff[k]!=keyName[k]) return(-1);
-	}
-	if(keyName==Key_N) return 7;
-	if(keyName==Key_S) return 8;
-	if(keyName==Key_E) return 9;
-	if(keyName==Key_O) return 10;
-	else return(-1);
-}
 
 void main() {
 	Serial* Arduino; Keyboard_* Keyboard;
@@ -42,6 +30,7 @@ void main() {
 			key=findKey(buffer); press(key);
 		}
 		Sleep(500); Keyboard.releaseAll();
+		*buffer = realloc(BUFF, sizeof(char));
 	}
 	endConnection(Arduino);
 	Keyboard.releaseAll(); Keyboard.end();
@@ -60,18 +49,12 @@ void endConnection(Serial* Arduino) {
 /*reads message recevied through Serial and
 returns positive integer if there is a macro associated with it;
 returns minus one if not*/
-int findKey(char buff[], char keyName[]){
-	if(sizeof(buff))!=sizeof(keyName) return(-1));
-	int*k=calloc(sizeof(int));
-	for(k=0;k<sizeof(buff)/sizeof(char)){
-		if(buff[k]!=keyName[k]) return(-1);
-	}
-	free(k);
+int findKey(char keyName[]){
 	if(keyName==Key_N) return 7;
 	if(keyName==Key_S) return 8;
 	if(keyName==Key_E) return 9;
 	if(keyName==Key_O) return 10;
-	else return(-1);
+	else return -1;
 }
 
 /*presses keys in computer keyboard according to pushbuttons of HID*/
