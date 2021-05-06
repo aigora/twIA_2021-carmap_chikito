@@ -4,11 +4,42 @@
 
 // Variables globales
 
+//Motor 1 es el motor de la derecha
+#define motor1_IZQ 6
+#define motor1_DER 7
+
+//Motor 2 es el motor de la izquierda
+#define motor2_IZQ 8
+#define motor2_DER 9
+
 void setup()
 {
   // Tareas de configuración 
   Serial.begin(9600);
+
+  pinMode(motor1_IZQ,OUTPUT);
+  pinMode(motor1_DER,OUTPUT);
+  
+  pinMode(motor2_IZQ,OUTPUT);
+  pinMode(motor2_DER,OUTPUT);
 }
+
+//Prototipos de función de movimiento
+void parar();
+void delante();
+void atras();
+void derecha();
+void izquierda();
+
+//Prototipos de función de motores
+void motor1DER();
+void motor1IZQ();
+
+void motor2DER();
+void motor2IZQ();
+
+void motor1PARA();
+void motor2PARA();
 
 void loop()
 {
@@ -47,10 +78,11 @@ int procesar_accion(void)
     if(movimiento=="lin")
     {
       if(sentido=="del"){
-        //Movimiento lineal hacia delante
+        delante(); //Movimiento lineal hacia delante
       }
       else if(sentido=="atr"){
-        //Movimiento lineal hacia atrás
+        atras(); //Movimiento lineal hacia atrás
+        
       }
       else{
       //Error
@@ -59,10 +91,10 @@ int procesar_accion(void)
     }
     else if(movimiento=="rot"){
       if(sentido=="der"){
-        //Movimiento rotacional hacia la derecha
+        derecha(); //Movimiento rotacional hacia la derecha
       }
       else if(sentido=="izq"){
-        //Movimiento rotacional hacia la izquierda
+        izquierda(); //Movimiento rotacional hacia la izquierda
       }
       else{
         //Error
@@ -81,4 +113,73 @@ int procesar_accion(void)
   delay(tiempoMilis);
   parar(); //Parar
   return 0;
+}
+
+//Cuerpos de funciones de movimiento
+void parar()
+{
+  motor1PARA();  
+  motor2PARA();
+}
+
+void delante()
+{
+  motor1DER();
+  motor2IZQ();
+}
+
+void atras()
+{
+  motor1IZQ();
+  motor2DER();
+}
+
+void derecha()
+{
+  motor1DER();  
+  motor2DER();
+}
+
+void izquierda()
+{
+  motor1IZQ();
+  motor2IZQ();
+}
+
+//Cuerpos de funciones de motores
+void motor1DER()
+{
+  digitalWrite(motor1_IZQ,LOW);
+  digitalWrite(motor1_DER,HIGH);
+}
+
+void motor1IZQ()
+{
+  digitalWrite(motor1_IZQ,HIGH);
+  digitalWrite(motor1_DER,LOW);
+}
+
+void motor2DER()
+{
+  digitalWrite(motor2_IZQ,LOW);
+  digitalWrite(motor2_DER,HIGH);
+}
+
+void motor2IZQ()
+{
+  digitalWrite(motor2_IZQ,HIGH);
+  digitalWrite(motor2_DER,LOW);
+ 
+}
+
+void motor1PARA()
+{
+  digitalWrite(motor1_IZQ,LOW);
+  digitalWrite(motor1_DER,LOW);
+}
+
+void motor2PARA()
+{
+  digitalWrite(motor2_IZQ,LOW);
+  digitalWrite(motor2_DER,LOW); 
 }
