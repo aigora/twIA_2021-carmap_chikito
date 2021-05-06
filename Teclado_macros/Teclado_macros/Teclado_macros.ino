@@ -29,9 +29,11 @@ void loop(){
       delay(50); buttons_now=digitalRead(i);
       if(buttons_now==LOW) key(i+1);
       }
+      buttons_states[i]=buttons_now;
     }
   }
 
+/*functions*/
 void key(int i){
   switch(i){
     case 1:north();break;
@@ -42,21 +44,25 @@ void key(int i){
     }
   }
 void north(){
+  Serial.println("pressing key: N");
   Keyboard.press('N');
   delay(500);
   Keyboard.release('N');
   }
 void south(){
+  Serial.println("pressing key : S");
   Keyboard.press('S');
   delay(500);
   Keyboard.release('S');
   }
 void east(){
+  Serial.println("pressing key : E");
   Keyboard.press('E');
   delay(500);
   Keyboard.release('E');
   }
 void west(){
+  Serial.println("pressing key : O");
   Keyboard.press('O');
   delay(500);
   Keyboard.release('O');
