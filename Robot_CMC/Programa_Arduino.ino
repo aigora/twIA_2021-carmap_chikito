@@ -15,10 +15,11 @@ void loop()
     
   if (Serial.available() > 0)  // Si hay mensajes procedentes del PC  
     procesar_accion();
-	
-   // Resto de acciones 
+    
   delay(50);
-}
+} 
+
+// Resto de acciones 
 
 int procesar_accion(void)
 {
@@ -49,10 +50,11 @@ int procesar_accion(void)
         //Movimiento lineal hacia delante
       }
       else if(sentido=="atr"){
-        //
+        //Movimiento lineal hacia atrás
       }
       else{
-      //Error  
+      //Error
+      return 20;  
       }
     }
     else if(movimiento=="rot"){
@@ -60,15 +62,16 @@ int procesar_accion(void)
         //Movimiento rotacional hacia la derecha
       }
       else if(sentido=="izq"){
-        //
+        //Movimiento rotacional hacia la izquierda
       }
       else{
         //Error
+        return 15;
       }
     }
     else{
       //Error
-      return 15;
+      return 10;
     }
   }
   else{
