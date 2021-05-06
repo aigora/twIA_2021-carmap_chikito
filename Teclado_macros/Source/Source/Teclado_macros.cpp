@@ -17,9 +17,9 @@ int findKey(char[],char[]);
 void press(int);
 
 int compare(char buff[],char keyName[]){
-	if(sizeof(buff))!=sizeof(keyName) return(-1));
+	if(sizeof(buff)!=sizeof(keyName) return(-1));
 	int k; for(k=0;k<sizeof(buff)/sizeof(char)){
-		if(buff[k])!=keyName[k]] return(-1);
+		if(buff[k]!=keyName[k]) return(-1);
 	}
 	if(keyName==Key_N) return 7;
 	if(keyName==Key_S) return 8;
@@ -60,7 +60,7 @@ void endConnection(Serial* Arduino) {
 /*reads message recevied through Serial and
 returns positive integer if there is a macro associated with it;
 returns minus one if not*/
-int findKey(char buff[] char keyName[]){
+int findKey(char buff[], char keyName[]){
 	if(sizeof(buff))!=sizeof(keyName) return(-1));
 	int*k=calloc(sizeof(int));
 	for(k=0;k<sizeof(buff)/sizeof(char)){
