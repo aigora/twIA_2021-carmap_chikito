@@ -54,9 +54,14 @@ void Calc_Coordinate_Time(pulsation*, coordinate*, time*, int flatmove1);
 int main(){
 	int flatmove;
 
-	printf("You must introduce the number of movement you want to make in the screen flat\n");
-	scanf_s("%d", &flatmove);
-	fseek(stdin, 0, SEEK_END);
+	int* assigned = (int*)malloc(sizeof(int));
+	if (!assigned) return 101;
+	do {
+		printf("You must introduce the number of movements you want to make in the screen flat\n");
+		(*assigned) = scanf_s("%d", &flatmove);
+		fseek(stdin, 0, SEEK_END);
+	} while (*assigned != 1);
+	free(assigned);
 
 	printf("You must push these buttons in order to move the robot:\n");
 	printf("If you want robot moves forward push 'n' in the keyboard\n");
