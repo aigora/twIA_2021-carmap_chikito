@@ -4,7 +4,6 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}\\Teclado_macros\\Source\\Keyboard"
             ],
             "defines": [
                 "_DEBUG",
