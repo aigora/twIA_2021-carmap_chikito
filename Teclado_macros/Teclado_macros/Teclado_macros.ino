@@ -6,22 +6,22 @@
 #include <Keyboard.h>
 
 /*"north/south/east/west" buttons: press to move robot*/
-#define N 7
-#define S 8
-#define E 9
-#define O 10
+#define N 6
+#define S 7
+#define E 8
+#define O 9
 
 /*initializes Serial and sets button pins as input*/
 void setup() {
   Serial.begin(9600); while(!Serial){;}
-  const int arrowpad[]={N,S,E,O}; int i;
+  int arrowpad[]={N,S,E,O}; int i;
   for(i=0;i<(sizeof(arrowpad)/sizeof(int));i++){ pinMode(arrowpad[i],INPUT_PULLUP); }
   Keyboard.begin();
   }
 
 /*push buttons trigger the corresponding Macros when pressed*/
 void loop(){
-  const int buttons[]={N,S,E,O};
+  int buttons[]={N,S,E,O};
   int buttons_states[]={HIGH,HIGH,HIGH,HIGH},buttons_now=HIGH,i;
   for(i=0;i<(sizeof(buttons_states)/sizeof(int));i++){
     buttons_now=digitalRead(buttons[i]);
@@ -29,8 +29,10 @@ void loop(){
       delay(50); buttons_now=digitalRead(i);
       if(buttons_now==LOW) key(i+1);
       }
+      delay(50);
       buttons_states[i]=buttons_now;
     }
+    Keyboard.releaseAll();
   }
 
 /*functions*/
@@ -45,25 +47,21 @@ void key(int i){
   }
 void north(){
   Serial.println("pressing key: N");
-  Keyboard.press('N');
-  delay(500);
-  Keyboard.release('N');
+  Keyboard.press('n');
+  Keyboard.release('n');
   }
 void south(){
-  Serial.println("pressing key : S");
-  Keyboard.press('S');
-  delay(500);
-  Keyboard.release('S');
+  Serial.println("pressing key: S");
+  Keyboard.press('s');
+  Keyboard.release('s');
   }
 void east(){
-  Serial.println("pressing key : E");
-  Keyboard.press('E');
-  delay(500);
-  Keyboard.release('E');
+  Serial.println("pressing key: E");
+  Keyboard.press('e');
+  Keyboard.release('e');
   }
 void west(){
-  Serial.println("pressing key : O");
-  Keyboard.press('O');
-  delay(500);
-  Keyboard.release('O');
+  Serial.println("pressing key: O");
+  Keyboard.press('e');
+  Keyboard.release('e');
 }
