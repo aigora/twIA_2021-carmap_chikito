@@ -12,18 +12,19 @@ typedef struct{
 /*functions' prototypes*/
 void connect(Serial*, char[]);
 bool compare(char[],char[]);
-void disconnect(Serial*,char[]);
+void disconnect(Serial*);
 
 void main() {
 	Serial* Arduino;
 	char port[] = "COM3", char buffer_in[BUFF];
 	char north[]="pressing key: N",south[]="pressing key: S";
 	char east[]="pressing key: E",west[]="pressing key: O";
+	char arrows[]={*north,*south,*east,*west};
 	int nBytes = 0,count_n=0,count_s=0,count_e=0,count_o=0;
 	int counter=0;
 	pulsation p0={count_n,count_s,count_e,count_o};
 	pulsation*p=(pulsation*)malloc(BUFF*sizeof(pulsation));
-	*(p+0)={count_n,count_s,count_e,count_o};
+	*(p+0)=p0;
 	connect(Arduino, port);
 	while (Arduino->IsConnected()) {
 		nBytes=Arduino->ReadData(buffer_in,BUFF);
@@ -37,7 +38,9 @@ void main() {
 			if(counter==BUFF-1)p=(pulsation*)realloc(p,BUFF);
 			*(p+counter)={count_n,count_s,count_e,count_o};
 		}
+		Sleep(500);
 	}
+	free(p); disconnect(Arduino);
 }
 
 /*set up connection with Arduino in COM3 port*/
@@ -45,18 +48,24 @@ void connect(Serial* Arduino, char port[]) {
 	Arduino = new Serial((char*)port);
 }
 
-/*compares two strings and returns true if they are the same; 0 if not;*/
+/*compares two strings and returns true if they are the same;*/
 bool compare(char str1[],char str2[]){
 	if(sizeof(str1)!=sizeof(str2)) return false;
 	else{
 		int*i=(int*)calloc(1,sizeof(int));
-		while(str1[*i]!='\0'){ if(str1[*i]!=str2[*i]) return false; }
+		while(str1[*i]!='\0'){ 
+			if(str1[*i]!=str2[*i]) { 
+				free(i);
+				return false;
+			} 
+		}
+		free(i);
 		return true;
 	}
 }
 
 /*ends connection with Arduino and closes the program;*/
-void disconnect(Serial* Arduino,char port[]){
+void disconnect(Serial* Arduino){
 	Arduino->~Serial();
 	exit(1);
 }
