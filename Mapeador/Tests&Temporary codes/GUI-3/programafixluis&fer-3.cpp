@@ -80,7 +80,7 @@ int main() {
 		gotoxy(0, i);
 		clearScreen(30);
 	}
-	
+
 
 	//Para dibujar los ejes cartesianos del mapa:
 	int xc = 50, yc = 50;
@@ -182,7 +182,7 @@ void Calc_Coordinate_Time(pulsation* p_pulsation, coordinate* p_coord, time* p_t
 	p_time->backwards = 0.0;
 	p_time->right = 0.0;
 	p_time->left = 0.0;
-	
+
 
 	if (p_pulsation->forward == 1) {
 
@@ -235,13 +235,14 @@ void Calc_Coordinate_Time(pulsation* p_pulsation, coordinate* p_coord, time* p_t
 
 void DrawMap(coordinate* p_coord) {
 	int xc = 50, yc = 50;
-	gotoxy((short)(xc + p_coord->x), (short)(yc - 0.5 * p_coord->y));
+	double corrector = 2 / (PI * WHEEL_RADIUS); //Para que las coordenadas mostradas en el mapa no sean múltiplo de PI (sino de un valor entero), ni dependan del radio
+	gotoxy((short)round(fabs( (xc + 2 * corrector * p_coord->x))), (short)round(fabs(( yc - corrector * p_coord->y))));
 	putchar('#');
 
 	// Ahora calculamos donde va el siguiente caracter que indica la rotación
 	short pointerX, pointerY;
-	pointerX = (short)(xc + p_coord->x + copysign(round(fabs(sin(p_coord->rotation))), sin(p_coord->rotation)));
-	pointerY = (short)(yc - 0.5 * p_coord->y + copysign(round(fabs(cos(p_coord->rotation))), -cos(p_coord->rotation)));
+	pointerX = (short)round(fabs((xc + 2 * corrector * p_coord->x + copysign(round(fabs(sin(p_coord->rotation))), sin(p_coord->rotation)))));
+	pointerY = (short)round(fabs((yc - corrector * p_coord->y + copysign(round(fabs(cos(p_coord->rotation))), -cos(p_coord->rotation)))));
 	gotoxy(pointerX, pointerY);
 	putchar('+');
 
