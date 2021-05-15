@@ -25,14 +25,11 @@ void loop(){
   int buttons_states[]={HIGH,HIGH,HIGH,HIGH},buttons_now=HIGH,i;
   for(i=0;i<(sizeof(buttons_states)/sizeof(int));i++){
     buttons_now=digitalRead(buttons[i]);
-    if(buttons_now==LOW&&buttons_states[i]==HIGH) {
+    if(buttons_now==LOW) {
       delay(50); buttons_now=digitalRead(i);
       if(buttons_now==LOW) key(i+1);
       }
-      delay(50);
-      buttons_states[i]=buttons_now;
     }
-    Keyboard.releaseAll();
   }
 
 /*functions*/
@@ -48,6 +45,7 @@ void key(int i){
 void north(){
   Serial.println("pressing key: N");
   Keyboard.press('n');
+  delay(50);
   Keyboard.release('n');
   }
 void south(){
