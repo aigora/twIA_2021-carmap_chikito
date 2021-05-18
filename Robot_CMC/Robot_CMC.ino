@@ -79,12 +79,12 @@ int procesar_accion(void)
     }
     tiempo[5]=0;
     tiempoMilis= atoi(tiempo);
-    if(movimiento=="lin")
+    if(strcmp(movimiento,"lin")==0)
     {
-      if(sentido=="del"){
+      if(strcmp(sentido,"del")==0){
         delante(); //Movimiento lineal hacia delante
       }
-      else if(sentido=="atr"){
+      else if(strcmp(sentido,"atr")==0){
         atras(); //Movimiento lineal hacia atrás
         
       }
@@ -93,11 +93,11 @@ int procesar_accion(void)
       return 20;  
       }
     }
-    else if(movimiento=="rot"){
-      if(sentido=="der"){
+    else if(strcmp(movimiento,"rot")==0){
+      if(strcmp(sentido,"der")==0){
         derecha(); //Movimiento rotacional hacia la derecha
       }
-      else if(sentido=="izq"){
+      else if(strcmp(sentido,"izq")==0){
         izquierda(); //Movimiento rotacional hacia la izquierda
       }
       else{
