@@ -26,7 +26,7 @@ Serial::Serial(wchar_t *portName)
         }
         else
         {
-            printf("ERROR!!!");
+            printf("ERROR!!!\n");
         }
     }
     else
