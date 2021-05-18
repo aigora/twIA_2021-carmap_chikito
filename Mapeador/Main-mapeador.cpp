@@ -5,16 +5,16 @@
 #include <stdio.h> // Standard I/O
 #include <stdlib.h>
 #include <string.h>
-#include <wchar.h> // Para usar los caracteres amplios (modificación y paso de valores a SerialClass.h)
+#include <wchar.h> // Para usar los caracteres amplios (modificaciï¿½n y paso de valores a SerialClass.h)
 #include <iso646.h> // "||" se puede escribir como "or" y "&&" como "and" - legibilidad: https://cplusplus.com/reference/ciso646/
-#include <math.h> // Funciones matemáticas
+#include <math.h> // Funciones matemï¿½ticas
 #include <stdbool.h>// Usamos variables booleanas para el tipo de movimiento y su sentido
 #include <conio.h>
 #include <windows.h> // Para hacer el mapeador con la funcion gotoxy junto con la libreria conio.h
 
 #include "vector.h" // Custom library to create and operate vectors easily
 #include "SerialClass/SerialClass.h" // Retrieved from: https://github.com/Gmatarrubia/LibreriasTutoriales (modified local resources)
-#include "waypoints_filehandler.h" // Librería para almacenar la trayectoria del robot en archivos binarios
+#include "waypoints_filehandler.h" // Librerï¿½a para almacenar la trayectoria del robot en archivos binarios
 
 // Bluetooth definitions
 #define PORT_SZ 15 // Port wide character string size
@@ -72,12 +72,12 @@ typedef struct {
 void getCOM_port_s(wchar_t*, size_t);
     /* Obtiene puerto COM desde stdin; args.:
     puntero a cadena de caracteres anchos donde se guarda el puerto a utilizar
-    tamaño max de la cadena
+    tamaï¿½o max de la cadena
     */
 
 int command_Arduino_time_s(char* buffer, size_t sz, bool tipoMovimiento, bool sentido, unsigned int tiempoMilis);
     /* Genera comando con formato "t:tipo_movimiento,sentido,tiempo;"
-    el tamaño mínimo de buffer (sz) es 18
+    el tamaï¿½o mï¿½nimo de buffer (sz) es 18
     tipo_movimiento: MOV_lineal o MOV_rotacion
     sentido: MOV_haciaDelante, MOV_haciaAtras, MOV_haciaIzq o MOV_haciaDer
     tiempoMillis: max 5 cifras
@@ -137,8 +137,8 @@ int main() // Main function
     p_time1->left = 0.0;
 
     // Begin getting port number to use
-    getCOM_port_s(puerto, PORT_SZ); // Menú que obtiene el nombre del puerto a usar
-    printf("\nLa comunicacion se realizara a traves del puerto %ws\n", puerto); // Imprime en pantalla el puerto que se está usando
+    getCOM_port_s(puerto, PORT_SZ); // Menï¿½ que obtiene el nombre del puerto a usar
+    printf("\nLa comunicacion se realizara a traves del puerto %ws\n", puerto); // Imprime en pantalla el puerto que se estï¿½ usando
 
     Arduino = new Serial(puerto); // Intentamos conectar el Arduino por el puerto Bluetooth que especifica el usuario
 
@@ -146,11 +146,11 @@ int main() // Main function
         // Initializing file to be written
         int error = waypts_bcreate_file(&fp_puntos, NAME_SZ, MODE_TIMESTAMP, nombreArchivoPuntos);
 
-        if (error == 100) { // Fallo asignando memoria dinámica
+        if (error == 100) { // Fallo asignando memoria dinï¿½mica
             printf("Error in memory assignment. Big oof for the programmer trying to figure this out.");
             return 31;
         }
-        else if (error == 150) { // Indica que el nombre especificado es inapropiado. Definido en función local
+        else if (error == 150) { // Indica que el nombre especificado es inapropiado. Definido en funciï¿½n local
             printf("Error creating file: name is not supported in source code.");
             return 32;
         }
@@ -159,11 +159,11 @@ int main() // Main function
             return 30;
         }
 
-        if (!fp_puntos) { // fp_puntos es NULL si hubo algún error
+        if (!fp_puntos) { // fp_puntos es NULL si hubo algï¿½n error
             printf("Error creating/opening file. File might already exist. Error number: %d", error);
             return 35;
         }
-        else { // Arduino está conectado y el fichero fue creado sin errores
+        else { // Arduino estï¿½ conectado y el fichero fue creado sin errores
             printf("Arduino conectado\n");
             printf("Fichero con trayectoria: %s\n", nombreArchivoPuntos);
         }
@@ -201,12 +201,12 @@ int main() // Main function
     gotoxy(0, 9);
     // !Dibujar ejes
 
-    // Dibujar posición actual del robot y datos superiores
+    // Dibujar posiciï¿½n actual del robot y datos superiores
     Calc_Coordinate_Time(p_pulsation1, p_coord1, p_time1);
 
     // Procesamiento de todo el algoritmo: entrada, procesamiento, salida en bucle
     vector2D position;
-    while ( Arduino->IsConnected() ) // Mientras el Arduino esté conectado se puede proceder
+    while ( Arduino->IsConnected() ) // Mientras el Arduino estï¿½ conectado se puede proceder
     {
         // Entrada de datos - pulsaciones del teclado
         p_pulsation1->forward = 0;
@@ -229,11 +229,11 @@ int main() // Main function
         comandoArduino_wrapper(BufferSalida, BUF, p_time1);
         Arduino->WriteData(BufferSalida, BUF);
 
-        // Guardar vector posición
+        // Guardar vector posiciï¿½n
         position = { p_coord1->x, p_coord1->y };
         waypts_bappend_vect(fp_puntos, &position);
 
-        // Imprimir posición en el mapa de la pantalla
+        // Imprimir posiciï¿½n en el mapa de la pantalla
         DrawMap(p_coord1);
 
         Sleep( max( max( p_time1->forward, p_time1->backwards ), max( p_time1->left, p_time1->rigth ) ) * 1000 ); // Esperamos a que se mueva el robot
@@ -250,34 +250,34 @@ void getCOM_port_s(wchar_t* dest, size_t max) {
     unsigned char status = 0, portNumber = 0;
     char tempPort[PORT_SZ]; // Trabajamos en cadena de caracteres simples y luego pasamos a *wchar_t
 
-    do { // Menú para indicar el puerto
+    do { // Menï¿½ para indicar el puerto
         printf("Escriba nombre del puerto serie a conectar: COM");
-        status = scanf_s("%hhu", &portNumber); // Recibe el numero como entero de tamaño unigned char máximo (ahorro de memoria)
+        status = scanf_s("%hhu", &portNumber); // Recibe el numero como entero de tamaï¿½o unigned char mï¿½ximo (ahorro de memoria)
     } while (status == 0 or portNumber == 0); // TODO #2: rev. puerto COM puede ser == 0 ?
 
-    if (portNumber > 9) { // Si tiene más de un dígito
-        strcpy_s(tempPort, "\\\\.\\COM"); // Véase tutorial en https://geekytheory.com/como-usar-arduino-y-cplusplus
+    if (portNumber > 9) { // Si tiene mï¿½s de un dï¿½gito
+        strcpy_s(tempPort, "\\\\.\\COM"); // Vï¿½ase tutorial en https://geekytheory.com/como-usar-arduino-y-cplusplus
     }
-    else { // Si solo tiene un dígito
+    else { // Si solo tiene un dï¿½gito
         strcpy_s(tempPort, "COM");
     }
 
-    sprintf_s(tempPort + strlen(tempPort), 4, "%d", portNumber); // Concatena el número a la cadena inicial, max 3 chars concatenados, con formato entero
+    sprintf_s(tempPort + strlen(tempPort), 4, "%d", portNumber); // Concatena el nï¿½mero a la cadena inicial, max 3 chars concatenados, con formato entero
     swprintf_s(dest, PORT_SZ, L"%hs", tempPort); // Cambia el formato de *char a *wchar_t, escribe en cadena destino
 
     return; // Fin de obtener puerto.
 }
 
 int command_Arduino_time_s(char* buffer, size_t sz, bool tipoMovimiento, bool sentido, unsigned int tiempoMilis) {
-    if (sz < 18) return STRUNCATE; // El tamaño del comando es mínimo 17 contando el carácter terminador, ej. "t:rot,izq,02035;\0"
-    if (tiempoMilis > 32767) return EDOM; // El tamaño de un int en el Arduino ocupa 2 bytes. Sobrepasar este número produce un comportamiento indefinido en el Arduino
-    char mov[4], sent[4]; // Aquí se almacenan los cachos de texto que luego se mandan al Robot
+    if (sz < 18) return STRUNCATE; // El tamaï¿½o del comando es mï¿½nimo 17 contando el carï¿½cter terminador, ej. "t:rot,izq,02035;\0"
+    if (tiempoMilis > 32767) return EDOM; // El tamaï¿½o de un int en el Arduino ocupa 2 bytes. Sobrepasar este nï¿½mero produce un comportamiento indefinido en el Arduino
+    char mov[4], sent[4]; // Aquï¿½ se almacenan los cachos de texto que luego se mandan al Robot
     if (tipoMovimiento) { // Es desplazamiento
         strcpy_s(mov, "lin");
         if (sentido) { // Hacia delante
             strcpy_s(sent, "del");
         }
-        else { // Hacia atrás
+        else { // Hacia atrï¿½s
             strcpy_s(sent, "atr");
         }
     }
@@ -296,7 +296,7 @@ int command_Arduino_time_s(char* buffer, size_t sz, bool tipoMovimiento, bool se
 
 int comandoArduino_wrapper(char* Buffer, size_t sz, tiempos* mov) {
     // Suponemos que tan solo un movimiento es no-cero
-    // Nótese la conversión a milisengundos que se hace
+    // Nï¿½tese la conversiï¿½n a milisengundos que se hace
     if (mov->forward != 0) {
         return command_Arduino_time_s(Buffer, sz, MOV_lineal, MOV_haciaDelante, mov->forward * 1000);
     }
@@ -372,15 +372,6 @@ void Calc_Coordinate_Time(pulsation* p_pulsation, coordinate* p_coord, tiempos* 
 
     }
 
-    else if (p_pulsation->backwards == 1) {
-
-        p_coord->displacement = (2 * M_PI * WHEEL_RADIUS) * WHEEL_TURN;
-        p_coord->x -= (p_coord->displacement) * sin(p_coord->rotation);
-        p_coord->y -= (p_coord->displacement) * cos(p_coord->rotation);
-
-        p_time->backwards = (p_coord->displacement) / (WHEEL_RADIUS * ANGULAR_VELOCITY);
-
-    }
     else if (p_pulsation->right == 1) {
 
         p_coord->rotation += ROT_ANGLE;
@@ -415,15 +406,12 @@ void Calc_Coordinate_Time(pulsation* p_pulsation, coordinate* p_coord, tiempos* 
 
 void DrawMap(coordinate* p_coord) {
     int xc = 50, yc = 50;
-    gotoxy((short)(xc + p_coord->x), (short)(yc - 0.5 * p_coord->y));
-    double corrector = 2 / (M_PI * WHEEL_RADIUS); //Para que las coordenadas mostradas en el mapa no sean múltiplo de PI (sino de un valor entero), ni dependan del radio
+    double corrector = 2 / (M_PI * WHEEL_RADIUS); //Para que las coordenadas mostradas en el mapa no sean mï¿½ltiplo de PI (sino de un valor entero), ni dependan del radio
     gotoxy((short)round(fabs((xc + 2 * corrector * p_coord->x))), (short)round(fabs((yc - corrector * p_coord->y))));
     putchar('#');
 
-    // Ahora calculamos donde va el siguiente caracter que indica la rotación
+    // Ahora calculamos donde va el siguiente caracter que indica la rotaciï¿½n
     short pointerX, pointerY;
-    pointerX = (short)(xc + p_coord->x + copysign(round(fabs(sin(p_coord->rotation))), sin(p_coord->rotation)));
-    pointerY = (short)(yc - 0.5 * p_coord->y + copysign(round(fabs(cos(p_coord->rotation))), -cos(p_coord->rotation)));
     pointerX = (short)round(fabs((xc + 2 * corrector * p_coord->x + copysign(round(fabs(sin(p_coord->rotation))), sin(p_coord->rotation)))));
     pointerY = (short)round(fabs((yc - corrector * p_coord->y + copysign(round(fabs(cos(p_coord->rotation))), -cos(p_coord->rotation)))));
     gotoxy(pointerX, pointerY);
