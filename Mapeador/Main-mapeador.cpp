@@ -100,8 +100,8 @@ int main() // Main function
     // Initialize bluetooth conection variables
     Serial* Arduino;
     wchar_t puerto[PORT_SZ];
-    char BufferSalida[BUF] = "\0", BufferEntrada[BUF], cadena[BUF];
-    int bytesRecibidos, intentos_lectura, contador = 0;
+    char BufferSalida[BUF] = "\0", BufferEntrada[BUF] = "\0", cadena[BUF] = "\0";
+    int contador = 0;
 
     // Initialize "waypoints file" variables
     FILE* fp_puntos = NULL;
@@ -109,32 +109,16 @@ int main() // Main function
 
     // Initialize robot properties variables
     // Declarate and initialize variable type pulsation
-    pulsation pulsation1, * p_pulsation1 = &pulsation1;
-    p_pulsation1->forward = 0;
-    p_pulsation1->backwards = 0;
-    p_pulsation1->right = 0;
-    p_pulsation1->left = 0;
+    pulsation *p_pulsation1 = (pulsation*)calloc(1, sizeof(pulsation));
+    if (!p_pulsation1) return 21;
 
-    p_pulsation1->n_counter = 0;
-    p_pulsation1->s_counter = 0;
-    p_pulsation1->e_counter = 0;
-    p_pulsation1->o_counter = 0;
-
-    //Declarate and initialize variable type coordinate
-    coordinate coord1, * p_coord1 = &coord1;
-    p_coord1->rotation = 0.0;
-    p_coord1->distance = 0.0;
-    p_coord1->displacement = 0.0;
-    p_coord1->x = 0.0;
-    p_coord1->y = 0.0;
+    // Declarate and initialize variable type coordinate
+    coordinate* p_coord1 = (coordinate*)calloc(1, sizeof(coordinate));
+    if (!p_coord1) return 22;
 
     // Declarate and initialize variable type tiempos
-    tiempos time1, * p_time1;
-    p_time1 = &time1;
-    p_time1->forward = 0.0;
-    p_time1->backwards = 0.0;
-    p_time1->rigth = 0.0;
-    p_time1->left = 0.0;
+    tiempos* p_time1 = (tiempos*)calloc(1, sizeof(tiempos));
+    if (!p_time1) return 23;
 
     // Begin getting port number to use
     getCOM_port_s(puerto, PORT_SZ); // Men� que obtiene el nombre del puerto a usar
@@ -431,7 +415,7 @@ void clearScreen(int spaces) {
 void gotoxy(short x, short y)
 {
     HANDLE map = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD cartsyst;
+    COORD cartsyst = { 0, 0 };
     cartsyst.X = x;
     cartsyst.Y = y;
 
