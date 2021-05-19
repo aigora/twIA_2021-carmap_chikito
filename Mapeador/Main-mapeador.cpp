@@ -56,7 +56,7 @@ typedef struct {
 typedef struct {
 
     double rotation, distance, displacement;
-    double x, y; // It contains the coordinates of the robot
+    vector2D coords; // It contains the coordinates of the robot
 
 }coordinate;
 
@@ -189,7 +189,6 @@ int main() // Main function
     Calc_Coordinate_Time(p_pulsation1, p_coord1, p_time1);
 
     // Procesamiento de todo el algoritmo: entrada, procesamiento, salida en bucle
-    vector2D position;
     while ( Arduino->IsConnected() ) // Mientras el Arduino est� conectado se puede proceder
     {
         // Entrada de datos - pulsaciones del teclado
@@ -213,9 +212,8 @@ int main() // Main function
         comandoArduino_wrapper(BufferSalida, BUF, p_time1);
         Arduino->WriteData(BufferSalida, BUF);
 
-        // Guardar vector posici�n
-        position = { p_coord1->x, p_coord1->y };
-        waypts_bappend_vect(fp_puntos, &position);
+        // Guardar vector posición
+        waypts_bappend_vect(fp_puntos, &p_coord1->coords);
 
         // Imprimir posici�n en el mapa de la pantalla
         DrawMap(p_coord1);
@@ -340,8 +338,10 @@ void Calc_Coordinate_Time(pulsation* p_pulsation, coordinate* p_coord, tiempos* 
     if (p_pulsation->forward == 1) {
 
         p_coord->displacement = (2 * M_PI * WHEEL_RADIUS) * WHEEL_TURN;
-        p_coord->x += (p_coord->displacement) * sin(p_coord->rotation);
-        p_coord->y += (p_coord->displacement) * cos(p_coord->rotation);
+
+        vector2D desplazamiento = { (p_coord->displacement) * sin(p_coord->rotation) , (p_coord->displacement) * cos(p_coord->rotation) };
+        
+        p_coord->coords = vector2D_add(p_coord->coords, desplazamiento);
 
         p_time->forward = (p_coord->displacement) / (WHEEL_RADIUS * ANGULAR_VELOCITY);
 
@@ -349,8 +349,10 @@ void Calc_Coordinate_Time(pulsation* p_pulsation, coordinate* p_coord, tiempos* 
     else if (p_pulsation->backwards == 1) {
 
         p_coord->displacement = (2 * M_PI * WHEEL_RADIUS) * WHEEL_TURN;
-        p_coord->x -= (p_coord->displacement) * sin(p_coord->rotation);
-        p_coord->y -= (p_coord->displacement) * cos(p_coord->rotation);
+
+        vector2D desplazamiento = { (p_coord->displacement) * sin(p_coord->rotation) , (p_coord->displacement) * cos(p_coord->rotation) };
+
+        p_coord->coords = vector2D_substract(p_coord->coords, desplazamiento);
 
         p_time->backwards = (p_coord->displacement) / (WHEEL_RADIUS * ANGULAR_VELOCITY);
 
@@ -383,7 +385,7 @@ void Calc_Coordinate_Time(pulsation* p_pulsation, coordinate* p_coord, tiempos* 
 
     //show coordinates and other data
     gotoxy(0, 0);
-    printf("Robot @ (x, y) = (%.5lf, %.5lf); Total displacement =  %.5lf; Distance from origin = %.5lf", p_coord->x, p_coord->y, p_coord->distance, sqrt(p_coord->x * p_coord->x + p_coord->y * p_coord->y));
+    printf("Robot @ (x, y) = (%.5lf, %.5lf); Total displacement =  %.5lf; Distance from origin = %.5lf", p_coord->coords.x, p_coord->coords.y, p_coord->distance, vector2D_modulo(p_coord->coords) );
 
     return;
 }
@@ -391,13 +393,13 @@ void Calc_Coordinate_Time(pulsation* p_pulsation, coordinate* p_coord, tiempos* 
 void DrawMap(coordinate* p_coord) {
     int xc = 50, yc = 50;
     double corrector = 2 / (M_PI * WHEEL_RADIUS); //Para que las coordenadas mostradas en el mapa no sean m�ltiplo de PI (sino de un valor entero), ni dependan del radio
-    gotoxy((short)round(fabs((xc + 2 * corrector * p_coord->x))), (short)round(fabs((yc - corrector * p_coord->y))));
+    gotoxy((short)round(fabs((xc + 2 * corrector * p_coord->coords.x))), (short)round(fabs((yc - corrector * p_coord->coords.y))));
     putchar('#');
 
     // Ahora calculamos donde va el siguiente caracter que indica la rotaci�n
     short pointerX, pointerY;
-    pointerX = (short)round(fabs((xc + 2 * corrector * p_coord->x + copysign(round(fabs(sin(p_coord->rotation))), sin(p_coord->rotation)))));
-    pointerY = (short)round(fabs((yc - corrector * p_coord->y + copysign(round(fabs(cos(p_coord->rotation))), -cos(p_coord->rotation)))));
+    pointerX = (short)round(fabs((xc + 2 * corrector * p_coord->coords.x + copysign(round(fabs(sin(p_coord->rotation))), sin(p_coord->rotation)))));
+    pointerY = (short)round(fabs((yc - corrector * p_coord->coords.y + copysign(round(fabs(cos(p_coord->rotation))), -cos(p_coord->rotation)))));
     gotoxy(pointerX, pointerY);
     putchar('+');
 
