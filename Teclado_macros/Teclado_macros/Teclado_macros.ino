@@ -11,23 +11,26 @@
 #define E 8
 #define O 9
 
+//const int arrowpad[]={N,S,E,O};
+//const int dim=sizeof(arrowpad)/sizeof(int);
+
 /*initializes Serial and sets button pins as input*/
 void setup() {
   Serial.begin(9600); while(!Serial){;}
   int arrowpad[]={N,S,E,O}; int i;
-  for(i=0;i<(sizeof(arrowpad)/sizeof(int));i++){ pinMode(arrowpad[i],INPUT_PULLUP); }
+  for(i=0;i<(sizeof(arrowpad)/sizeof(int));i++){ pinMode(arrowpad[i],INPUT); }
   Keyboard.begin();
   }
 
 /*push buttons trigger the corresponding Macros when pressed*/
 void loop(){
   int buttons[]={N,S,E,O};
-  int buttons_states[]={HIGH,HIGH,HIGH,HIGH},buttons_now=HIGH,i;
-  for(i=0;i<(sizeof(buttons_states)/sizeof(int));i++){
-    buttons_now=digitalRead(buttons[i]);
-    if(buttons_now==LOW) {
-      delay(50); buttons_now=digitalRead(i);
-      if(buttons_now==LOW) key(i+1);
+  int button_now=HIGH,buttons_prev[]={HIGH,HIGH,HIGH,HIGH},i;
+  for(i=0;i<(sizeof(buttons)/sizeof(int));i++){
+    button_now=digitalRead(buttons[i]);
+    if(button_now==LOW&&buttons_prev[i]==HIGH){
+      delay(20); button_now=digitalRead(buttons[i]);
+      if(button_now==LOW){key(i+1);}
       }
     }
   }
@@ -45,21 +48,24 @@ void key(int i){
 void north(){
   Serial.println("pressing key: N");
   Keyboard.press('n');
-  delay(50);
+  delay(30);
   Keyboard.release('n');
   }
 void south(){
   Serial.println("pressing key: S");
   Keyboard.press('s');
+  delay(30);
   Keyboard.release('s');
   }
 void east(){
   Serial.println("pressing key: E");
   Keyboard.press('e');
+  delay(30);
   Keyboard.release('e');
   }
 void west(){
   Serial.println("pressing key: O");
-  Keyboard.press('e');
-  Keyboard.release('e');
+  Keyboard.press('o');
+  delay(30);
+  Keyboard.release('o');
 }
