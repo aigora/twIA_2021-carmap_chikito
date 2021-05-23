@@ -1,18 +1,10 @@
 ## Programa del teclado Arduino
-Objetivo: Crear una interfaz (HID) para controlar el robot y realizar comandos, además de generar los datos de posición y rotación que necesitan los programas mapeador y robot CMC para funcionar.
-Se conecta en el puerto USB.
+El objetivo de esta parte del proyecto era crear una interfaz que pueda controlar los movimientos del robot; más específicamente, programar los botones para que, al pulsarlos, ejecuten cada uno una función dentro del programa (un teclado de macros, pero diseñado para CarMap)
 
-***
+En la primera versión, el teclado únicamente es capaz de _escribir_ las letras 'n','s','e' y 'o' (los motores del robot están programados para reaccionar a ellas). El verdadero potencial reside en que, si en algún momento en el futuro se añaden nuevas funciones al programa principal, se puedan añadir más teclas o _perfiles_ del teclado que permitan realizar dichas funciones rápidamente.
 
-El teclado funciona como un mando a distancia para controlar el robot en remoto, se conecta al ordenador por el puerto USB y funciona con un simple código en Arduino y una aplicación en C++ que acciona las teclas del ordenador y realiza funciones;
-- Los cuatro botones en forma de cruz son equivalentes a pulsar las teclas 'n','s','e' y 'o';
-- Los motores del robot están programados para que el movimiento se pueda controlar por los pulsadores
-
-El teclado funciona como un _macro keyboard_; cada pulsación en él realiza una serie de pulsaciones y funciones más complicadas codificadas en los distintos módulos del proyecto;
-Funciones principales:
-- Pausar; detiene el movimiento del robot al pulsarlo, o reanuda el movimiento si este estaba detenido
-- Salir; detiene y apaga el robot y cierra todo
-- Start; comienza la grabación de la trayectoria del robot, o la finaliza y guarda si ya estaba empezando
-- Guardar; envía un vector numérico con las coordenadas del robot al programa principal
-- Cuatro botones que funcionan como teclas direccionales se ocupan de los movimientos y giros
-Las funciones de todas estas teclas están definidas en los códigos del proyecto.
+Para usar: Se tiene que conectar el controlador (el cual tiene dentro el código) al ordenador, y ejecutar el programa Mapeador y el Robot, que se mueve pulsando las teclas:
+ - N: mover hacia adelante
+ - S: retroceder
+ - E: girar a la derecha
+ - O: girar a la izquierda
