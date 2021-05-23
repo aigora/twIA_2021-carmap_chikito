@@ -11,25 +11,25 @@
 #define E 8
 #define O 9
 
-//const int arrowpad[]={N,S,E,O};
-//const int dim=sizeof(arrowpad)/sizeof(int);
+/*array of the button pins, size of array*/
+const int arrowpad[]={N,S,E,O};
+const int dim=sizeof(arrowpad)/sizeof(int);
 
 /*initializes Serial and sets button pins as input*/
 void setup() {
   Serial.begin(9600); while(!Serial){;}
-  int arrowpad[]={N,S,E,O}; int i;
-  for(i=0;i<(sizeof(arrowpad)/sizeof(int));i++){ pinMode(arrowpad[i],INPUT); }
+  int i;
+  for(i=0;i<dim;i++){ pinMode(arrowpad[i],INPUT); }
   Keyboard.begin();
   }
 
 /*push buttons trigger the corresponding Macros when pressed*/
 void loop(){
-  int buttons[]={N,S,E,O};
   int button_now=HIGH,buttons_prev[]={HIGH,HIGH,HIGH,HIGH},i;
-  for(i=0;i<(sizeof(buttons)/sizeof(int));i++){
-    button_now=digitalRead(buttons[i]);
+  for(i=0;i<dim;i++){
+    button_now=digitalRead(arrowpad[i]);
     if(button_now==LOW&&buttons_prev[i]==HIGH){
-      delay(20); button_now=digitalRead(buttons[i]);
+      delay(20); button_now=digitalRead(arrowpad[i]);
       if(button_now==LOW){key(i+1);}
       }
     }
