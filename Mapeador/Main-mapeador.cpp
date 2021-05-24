@@ -86,7 +86,7 @@ int command_Arduino_time_s(char* buffer, size_t sz, bool tipoMovimiento, bool se
 // GUI functions
 void gotoxy(short x, short y);
 void DrawMap(coordinate*);
-void clearScreen(int numberofCharactersYouWantToClearInConsole); // It explains by itself
+void clearScreen(int numberofCharactersYouWantToClearInConsole); // Self-explanatory
 
 // Robot functions
 int ProcessPulsation(pulsation*, int);
