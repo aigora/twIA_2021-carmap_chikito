@@ -5,6 +5,10 @@ Serial::Serial(wchar_t *portName)
     //We're not yet connected
     this->connected = false;
 
+    // Initialization of status and errors - clear C26495 var is uninitialized warning
+    this->status = { 0 };
+    this->errors = 0;
+
     //Try to connect to the given port throuh CreateFile
     this->hSerial = CreateFile(portName,
             GENERIC_READ | GENERIC_WRITE,
