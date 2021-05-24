@@ -208,17 +208,21 @@ int main() // Main function
         gotoxy(0, 1);
         printf("Key counters: 'n': %d; 's': %d; 'e': %d; 'o': %d", p_pulsation1->n_counter, p_pulsation1->s_counter, p_pulsation1->e_counter, p_pulsation1->o_counter);
 
-        // Enviar comando al robot
-        comandoArduino_wrapper(BufferSalida, BUF, p_time1);
-        Arduino->WriteData(BufferSalida, BUF);
+        // Generar comando y si sale bien enviarlo
+        if (comandoArduino_wrapper(BufferSalida, BUF, p_time1) == 0) {
+            // Enviar comando al robot
+            Arduino->WriteData(BufferSalida, BUF);
 
-        // Guardar vector posición
-        waypts_bappend_vect(fp_puntos, &p_coord1->coords);
+            // Guardar vector posición
+            waypts_bappend_vect(fp_puntos, &p_coord1->coords);
 
-        // Imprimir posici�n en el mapa de la pantalla
-        DrawMap(p_coord1);
+            // Imprimir posición en el mapa de la pantalla
+            DrawMap(p_coord1);
 
-        Sleep( max( max( p_time1->forward, p_time1->backwards ), max( p_time1->left, p_time1->rigth ) ) * 1000 ); // Esperamos a que se mueva el robot
+            // Esperamos a que se mueva el robot
+            Sleep(max(max(p_time1->forward, p_time1->backwards), max(p_time1->left, p_time1->rigth)) * 1000);
+        }
+        
         contador++;
     }
 
@@ -292,6 +296,7 @@ int comandoArduino_wrapper(char* Buffer, size_t sz, tiempos* mov) {
         return command_Arduino_time_s(Buffer, sz, MOV_rotacion, MOV_haciaIzq, mov->left * 1000);
     }
     else
+        *Buffer = '\0'; // En caso extraño se limpia la cadena
         return -1;
     return 0;
 }
