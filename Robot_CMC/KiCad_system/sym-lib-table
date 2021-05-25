@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name MyLib_oldICs)(type Legacy)(uri "C:/Users/Yo/Documents/05. Autodidacta/Electronics/My_KiCad_Libs/MyLib_oldICs.lib")(options "")(descr ""))
+  (lib (name MyLib_KeyestudioModules)(type Legacy)(uri "C:/Users/Yo/Documents/05. Autodidacta/Electronics/My_KiCad_Libs/MyLib_KeyestudioModules.lib")(options "")(descr ""))
+)
