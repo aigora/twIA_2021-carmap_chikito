@@ -1,17 +1,15 @@
-
 /*  Project: CarMap - Chikito
  *  This file is the main program for the macro keyboard.
  */
-
 #include <Keyboard.h>
 
-/*"north/south/east/west" buttons: press to move robot*/
+/*"north/south/east/west" buttons are connected to pins 6,7,8,9*/
 #define N 6
 #define S 7
 #define E 8
 #define O 9
 
-/*array of the button pins, size of array*/
+/*array of the button pins and size of arrays declared as constant*/
 const int arrowpad[]={N,S,E,O};
 const int dim=sizeof(arrowpad)/sizeof(int);
 
@@ -35,7 +33,7 @@ void loop(){
     }
   }
 
-/*functions*/
+/*this function receives the number of the pressed pin and calls another function*/
 void key(int i){
   switch(i){
     case 1:north();break;
@@ -45,6 +43,7 @@ void key(int i){
     default:break;
     }
   }
+/*functions called in every case*/
 void north(){
   Serial.println("pressing key: N");
   Keyboard.press('n');
