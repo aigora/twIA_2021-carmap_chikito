@@ -8,8 +8,9 @@
 #define S 7
 #define E 8
 #define O 9
-
-/*array of the button pins and size of arrays declared as constant*/
+//
+/*array of the button pins and size of arrays are used by all functions but now modified
+usage of global variables is acceptable in this context*/
 const int arrowpad[]={N,S,E,O};
 const int dim=sizeof(arrowpad)/sizeof(int);
 
@@ -17,7 +18,7 @@ const int dim=sizeof(arrowpad)/sizeof(int);
 void setup() {
   Serial.begin(9600); while(!Serial){;}
   int i;
-  for(i=0;i<dim;i++){ pinMode(arrowpad[i],INPUT); }
+  for(i=0;i<dim;i++){ pinMode(arrowpad[i],INPUT_PULLUP); }
   Keyboard.begin();
   }
 
@@ -26,10 +27,13 @@ void loop(){
   int button_now=HIGH,buttons_prev[]={HIGH,HIGH,HIGH,HIGH},i;
   for(i=0;i<dim;i++){
     button_now=digitalRead(arrowpad[i]);
+    Serial.println(button_now);
     if(button_now==LOW&&buttons_prev[i]==HIGH){
-      delay(20); button_now=digitalRead(arrowpad[i]);
-      if(button_now==LOW){key(i+1);}
+      delay(100); button_now=digitalRead(arrowpad[i]);
+      if(button_now==LOW){key(i+1);delay(100);}
+      else{delay(200);}
       }
+      delay(300);
     }
   }
 
@@ -47,24 +51,24 @@ void key(int i){
 void north(){
   Serial.println("pressing key: N");
   Keyboard.press('n');
-  delay(30);
   Keyboard.release('n');
+  delay(100);
   }
 void south(){
   Serial.println("pressing key: S");
   Keyboard.press('s');
-  delay(30);
   Keyboard.release('s');
+  delay(100);
   }
 void east(){
   Serial.println("pressing key: E");
   Keyboard.press('e');
-  delay(30);
   Keyboard.release('e');
+  delay(100);
   }
 void west(){
   Serial.println("pressing key: O");
   Keyboard.press('o');
-  delay(30);
   Keyboard.release('o');
+  delay(100);
 }
